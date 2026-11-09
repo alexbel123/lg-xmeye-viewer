@@ -1,6 +1,6 @@
 {
   "id": "local.xmeye.viewer",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "vendor": "Local Viewer",
   "type": "web",
   "main": "index.html",

@@ -1,18 +1,18 @@
 # LG XMEye Viewer
 
-**An open-source CCTV viewer for LG webOS TVs: local DVRIP connections, H.264/H.265 playback and up to four simultaneous cameras.**
+**An open-source CCTV viewer for LG webOS TVs: local DVRIP connections, H.264/H.265 playback and up to six simultaneous cameras.**
 
 [Русский](README.md) · [Installation](docs/INSTALL.en.md) · [Compatibility](docs/COMPATIBILITY.md) · [Privacy](docs/PRIVACY.md) · [Issues](https://github.com/alexbel123/lg-xmeye-viewer/issues/new/choose)
 
 The TV application and its JavaScript service connect directly to an XMEye-compatible DVR/NVR by IP, using the recorder's own account. An always-on computer and an XMEye cloud account are not required. Cloud/P2P login by serial number is not implemented.
 
-**Experimental developer preview, version 0.3.3.** [The release](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.3.3) includes HD/FHD IPK packages, a source-built decoder bundle, full corresponding sources and checksums. The decoder is built from pinned FFmpeg sources. This project has not been approved for LG Content Store. Ordinary non-root Developer Mode operation has not yet been validated. Read compatibility notes before installation.
+**Experimental developer preview, version 0.3.4.** [The release](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.3.4) includes HD/FHD IPK packages, a source-built decoder bundle, full corresponding sources and checksums. The decoder is built from pinned FFmpeg sources. This project has not been approved for LG Content Store. Ordinary non-root Developer Mode operation has not yet been validated. Read compatibility notes before installation.
 
 ## Features
 
 - Separate recorder profiles and encrypted saved credentials per device.
 - Live channel list, main/substream selection and hot camera switching.
-- Up to **four** live cameras from one recorder, with independent media connections.
+- Up to **six** live cameras from one recorder, with independent media connections.
 - Fullscreen camera field with hidden controls and remote navigation.
 - H.264/H.265 playback using MediaSource or a local WebAssembly/WebGL decoder.
 - Recording search/playback, verified against synthetic recordings.
@@ -24,11 +24,11 @@ No audio, PTZ, cloud-serial login, recording export or universal recorder compat
 
 Working application with **synthetic test patterns**, never private CCTV footage:
 
-![Working four-camera grid with synthetic video](docs/images/live-grid.png)
+![Working six-camera grid with synthetic video](docs/images/live-grid.png)
 
-Separate v0.4 **UI concept**, with generated images. Its 1/2/4/6 layouts and named camera sets are design proposals and are not all implemented in the working application:
+Separate v0.4 **UI concept**, with generated images. The working player supports up to six streams with an automatic 3×2 grid. Named sets and manual layout selection remain prototype features:
 
-![Separate six-camera UI concept, not the current application's feature set](docs/images/interface-concept.png)
+![Future UI concept with named camera sets and generated imagery](docs/images/interface-concept.png)
 
 Open `design/prototype-v0.4/index.html` for the interactive concept. It makes no connections to recorders.
 

@@ -1,5 +1,5 @@
 {
-  "version": "0.3.3",
+  "version": "0.3.4",
   "date": "2026-11-09",
   "environment": "Local Node.js and Windows Chrome with synthetic recorders; no new TV installation",
   "decoder_pixel_tests": {
@@ -12,7 +12,7 @@
     ],
     "b_frames_and_flush": true,
     "pixel_sha256_matches_native_ffmpeg": true,
-    "four_independent_instances": true
+    "six_independent_instances": true
   },
   "protocol_media_credentials_stream_tests": {
     "passed": 23,
@@ -24,17 +24,20 @@
       "result": {
         "passed": true,
         "hotSwitches": 12,
-        "simultaneousChannels": 4,
+        "simultaneousChannels": 6,
+        "serviceStreams": 6,
         "layouts": [
           "960x540",
           "1280x720",
           "1366x768",
           "1920x1080"
         ],
+        "fiveCameraGrid": "3x2",
         "fullscreenGrid": true,
         "backRestoresInterface": true,
         "gridChannelKeys": true,
-        "fifthCameraLimit": true,
+        "seventhCameraLimit": true,
+        "rejectedSeventhPreservesSixStreams": true,
         "removeAndReaddWithoutStoppingPeers": true,
         "browserErrors": []
       }
@@ -44,41 +47,48 @@
       "result": {
         "passed": true,
         "hotSwitches": 12,
-        "simultaneousChannels": 4,
+        "simultaneousChannels": 6,
+        "serviceStreams": 6,
         "layouts": [
           "960x540",
           "1280x720",
           "1366x768",
           "1920x1080"
         ],
+        "fiveCameraGrid": "3x2",
         "fullscreenGrid": true,
         "backRestoresInterface": true,
         "gridChannelKeys": true,
-        "fifthCameraLimit": true,
+        "seventhCameraLimit": true,
+        "rejectedSeventhPreservesSixStreams": true,
         "removeAndReaddWithoutStoppingPeers": true,
         "browserErrors": []
       }
     }
   ],
   "emscripten_runtime_source_files_verified": 3451,
-  "hardware_performance": "Not measured for the rebuilt decoder; historical TV results apply only to the previous decoder",
+  "hardware_performance": "Six-camera physical-TV throughput has not been measured; historical TV results apply only to the earlier four-camera decoder",
+  "max_simultaneous_streams": 6,
   "packaged_ipk_browser": [
     {
       "codec": "h264",
       "result": {
         "passed": true,
         "hotSwitches": 12,
-        "simultaneousChannels": 4,
+        "simultaneousChannels": 6,
+        "serviceStreams": 6,
         "layouts": [
           "960x540",
           "1280x720",
           "1366x768",
           "1920x1080"
         ],
+        "fiveCameraGrid": "3x2",
         "fullscreenGrid": true,
         "backRestoresInterface": true,
         "gridChannelKeys": true,
-        "fifthCameraLimit": true,
+        "seventhCameraLimit": true,
+        "rejectedSeventhPreservesSixStreams": true,
         "removeAndReaddWithoutStoppingPeers": true,
         "browserErrors": []
       }
@@ -88,17 +98,20 @@
       "result": {
         "passed": true,
         "hotSwitches": 12,
-        "simultaneousChannels": 4,
+        "simultaneousChannels": 6,
+        "serviceStreams": 6,
         "layouts": [
           "960x540",
           "1280x720",
           "1366x768",
           "1920x1080"
         ],
+        "fiveCameraGrid": "3x2",
         "fullscreenGrid": true,
         "backRestoresInterface": true,
         "gridChannelKeys": true,
-        "fifthCameraLimit": true,
+        "seventhCameraLimit": true,
+        "rejectedSeventhPreservesSixStreams": true,
         "removeAndReaddWithoutStoppingPeers": true,
         "browserErrors": []
       }

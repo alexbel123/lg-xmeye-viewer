@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { DvripClient, passwordHash } = require('./dvrip.cjs');
 const { MediaParser, FragmentedMP4 } = require('./media.cjs');
 const { CredentialStore } = require('./credentials.cjs');
+const MAX_STREAMS = 6;
 
 function message(kind, payload) {
   const data = Buffer.isBuffer(payload) ? payload : Buffer.from(typeof payload === 'string' ? payload : JSON.stringify(payload));
@@ -27,7 +28,7 @@ class ViewerManager {
       this.server.listen(0, '127.0.0.1', () => { this.port = this.server.address().port; resolve(); });
     });
     await this.opening;
-    return { version: '0.3.3', native: true, maxStreams: 4, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list() };
+    return { version: '0.3.4', native: true, maxStreams: MAX_STREAMS, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list() };
   }
 
   async credentialsInfo({ id } = {}) {
@@ -113,7 +114,7 @@ class ViewerManager {
     this._device(id);
     if (typeof slot !== 'string' || !/^[a-zA-Z0-9_-]{1,40}$/.test(slot)) throw new Error('Некорректное окно камеры');
     const old = this.streams.get(slot);
-    if (!old && this.streams.size >= 4) throw new Error('Одновременно можно открыть до четырёх камер');
+    if (!old && this.streams.size >= MAX_STREAMS) throw new Error('Одновременно можно открыть до шести камер');
     if (old) this._release(old);
     const token = crypto.randomBytes(24).toString('hex');
     const source = { id, slot, token, ...details };

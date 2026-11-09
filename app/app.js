@@ -11,7 +11,7 @@
   } catch (_) { profiles = defaults; }
   const state = { profiles, selected: profiles[0]?.id || null, connections: new Map(), view: 'live', channel: 0, quality: 'Extra1', favorites: false, connecting: null, editing: null, modal: null, lastFocus: null, playing: false, mode: 'live', playGeneration: 0, loginGeneration: 0, lastPlay: null, recordings: [], nextBegin: null, lastQuery: null, native: Boolean(window.PalmServiceBridge), service: false, keyboardVisible: false };
   state.savedCredentials = new Map(); state.forgetCredentials = false;
-  state.multi = false; state.tiles = new Map(); state.mainLease = null;
+  state.multi = false; state.tiles = new Map(); state.mainLease = null; state.maxStreams = 6;
   const bridges = new Set();
   let sessionBridge = null, toastTimer;
   function service(method, parameters = {}) {
@@ -89,7 +89,7 @@
     $('favorites-filter').setAttribute('aria-pressed', String(state.favorites));
     $('grid-toggle').setAttribute('aria-pressed', String(state.multi));
     $('grid-toggle').disabled=Boolean(state.switchingLayout);
-    $('grid-summary').textContent = state.multi ? 'Выбрано ' + state.tiles.size + ' из 4' : 'Одиночный просмотр';
+    $('grid-summary').textContent = state.multi ? 'Выбрано ' + state.tiles.size + ' из ' + state.maxStreams : 'Одиночный просмотр';
     document.querySelector('[data-action=edit]').disabled = !item;
   }
   function renderArchiveChannels() {
@@ -229,7 +229,7 @@
   async function openTile(channel) {
     const current = connection(); if (!current) return connectDevice();
     if (state.tiles.has(channel)) return;
-    if (state.tiles.size >= 4) return toast('В сетке можно выбрать до четырёх камер');
+    if (state.tiles.size >= state.maxStreams) return toast('В сетке можно выбрать до ' + state.maxStreams + ' камер');
     const item = current.channels[channel]; if (!item) return;
     const tile = { channel, slot:'grid-' + channel, lease:null, element:document.createElement('section') };
     tile.element.className = 'camera-tile'; tile.element.dataset.channel = String(channel); tile.element.setAttribute('aria-label',item.name);
@@ -491,6 +491,7 @@
   window.addEventListener('beforeunload', () => { player.stop();for(const tile of state.tiles.values())tile.player.dispose();state.tiles.clear();for (const bridge of bridges) if (bridge.cancel) bridge.cancel(); if (sessionBridge?.cancel) sessionBridge.cancel(); service('stop').catch(() => {}); });
   render(); focusElement($('device-list').querySelector('button') || document.querySelector('[data-action=add]'));
   service('bootstrap').then(response => {
+    if(Number.isInteger(response.maxStreams)&&response.maxStreams>0)state.maxStreams=Math.min(6,response.maxStreams);
     state.savedCredentials = new Map((response.credentials || []).map(account => [account.id, account])); render();
     state.service = true; $('service-state').textContent = response.native ? 'Сервис готов' : 'Предпросмотр'; document.querySelector('.network-dot').classList.add('ready');
     if (response.native && window.PalmServiceBridge) { sessionBridge = new PalmServiceBridge(); sessionBridge.onservicecallback = () => {}; sessionBridge.call('luna://local.xmeye.viewer.service/session', JSON.stringify({ subscribe: true })); }

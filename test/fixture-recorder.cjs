@@ -39,7 +39,7 @@ function accessUnits(filename, codec = 'h264') {
   return frames;
 }
 
-async function createFixtureRecorder({ filename, codec = 'h264', port = 0, username = USERNAME, password = PASSWORD, claimDelay = 0, rejectReclaim = false, closeOnStop = false, failChannels = [], aliveInterval = 60 }) {
+async function createFixtureRecorder({ filename, codec = 'h264', port = 0, username = USERNAME, password = PASSWORD, claimDelay = 0, rejectReclaim = false, closeOnStop = false, failChannels = [], aliveInterval = 60, channelCount = 4 }) {
   const frames = accessUnits(filename, codec), sockets = new Set(), commands = [], requests = [];
   let connectionCount = 0;
   const server = net.createServer(socket => {
@@ -71,8 +71,8 @@ async function createFixtureRecorder({ filename, codec = 'h264', port = 0, usern
         requests.push({connection,command,action:body.OPMonitor?.Action,channel:body.OPMonitor?.Parameter?.Channel});
         let response = { Ret: 100 };
         if (command === 1000) response = body.UserName === username && body.PassWord === passwordHash(password) ? { Ret: 100, SessionID: '0x0000002a', AliveInterval: aliveInterval, 'DeviceType ': 'SYNTHETIC TEST' } : { Ret: 203 };
-        else if (command === 1020) response.SystemInfo = { VideoInChannel: 4, HardWare: 'Тестовый регистратор', SoftWareVersion: 'SYNTHETIC FIXTURE' };
-        else if (command === 1048) response.ChannelTitle = ['Тестовая камера 1', 'Тестовая камера 2', 'Тестовая камера 3', 'Тестовая камера 4'];
+        else if (command === 1020) response.SystemInfo = { VideoInChannel: channelCount, HardWare: 'Тестовый регистратор', SoftWareVersion: 'SYNTHETIC FIXTURE' };
+        else if (command === 1048) response.ChannelTitle = Array.from({length:channelCount},(_,index)=>'Тестовая камера '+(index+1));
         else if (command === 1452) response.OPTimeQuery = '2026-11-04 12:00:00';
         else if (command === 1440) { response.Ret = 110; response.OPFileQuery = [{ FileName: 'synthetic-video', BeginTime: '2026-11-04 12:00:00', EndTime: '2026-11-04 12:00:06' }]; }
         if (command === 1413) {
@@ -97,7 +97,7 @@ module.exports = { createFixtureRecorder, accessUnits };
 if (require.main === module) {
   const path = require('path');
   const codec = process.argv[2] === 'h265' ? 'h265' : 'h264';
-  createFixtureRecorder({ filename: path.join(__dirname, 'fixtures/video.' + codec), codec, port: Number(process.argv[3]) || 19429 }).then(fixture => {
+  createFixtureRecorder({ filename: path.join(__dirname, 'fixtures/video.' + codec), codec, port: Number(process.argv[3]) || 19429, channelCount:Number(process.argv[4])||4 }).then(fixture => {
     console.log('SYNTHETIC test recorder: 127.0.0.1:' + fixture.port);
     process.on('SIGTERM', () => fixture.close().finally(() => process.exit(0)));
     process.on('SIGINT', () => fixture.close().finally(() => process.exit(0)));

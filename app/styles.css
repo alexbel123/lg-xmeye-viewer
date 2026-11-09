@@ -48,3 +48,5 @@
 .fullscreen #player-shell:focus-within .player-controls,.fullscreen .camera-tile:focus-within .tile-controls{opacity:1;pointer-events:auto}
 @media(max-width:1500px){.camera-toolbar{gap:10px;font-size:13px;margin-bottom:10px}.grid-toggle,.grid-screen{font-size:13px;min-height:36px;padding:8px 10px}.tile-caption{font-size:13px;padding:10px 10px 20px}.tile-controls{padding:8px}.tile-status{font-size:13px}.tile-button{font-size:12px}}
 @media(max-width:1050px){.camera-toolbar #grid-summary{display:none}.camera-toolbar{gap:8px}.grid-screen{font-size:12px}.tile-controls{padding:6px}.tile-button{font-size:11px;padding:5px 6px}}
+
+.camera-grid[data-count="5"],.camera-grid[data-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}

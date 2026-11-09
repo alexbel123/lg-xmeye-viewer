@@ -54,19 +54,22 @@ test('rapid camera changes cancel an unfinished Claim without closing the contro
   assert.ok(!fixture.requests.some(request=>request.action==='Stop'));
 });
 
-test('four streams are independent; an unavailable camera and removing one tile preserve the others',async t=>{
-  const {manager,open}=await setup(t,{rejectReclaim:true,closeOnStop:true,failChannels:[2]});
-  const sources=[];for(let channel=0;channel<4;channel++) sources.push(await manager.live({id:'fixture',channel,slot:'grid-'+channel}));
-  await assert.rejects(manager.live({id:'fixture',channel:0,slot:'fifth'}),/четырёх/);
+test('six streams are independent; a seventh is rejected and a failed camera preserves peers',async t=>{
+  const {manager,open}=await setup(t,{channelCount:8,rejectReclaim:true,closeOnStop:true,failChannels:[2]});
+  assert.equal((await manager.bootstrap()).maxStreams,6);
+  const sources=[];for(let channel=0;channel<6;channel++) sources.push(await manager.live({id:'fixture',channel,slot:'grid-'+channel}));
+  await assert.rejects(manager.live({id:'fixture',channel:6,slot:'seventh'}),/шести/);
   // Replace the unconsumed reservations with actual streams, including one failure.
-  const streams=[];for(let channel=0;channel<4;channel++) streams.push(await open(channel,'grid-'+channel));
-  for(const channel of [0,1,3]) assert.equal((await streams[channel].next()).kind,1);
+  const streams=[];for(let channel=0;channel<6;channel++) streams.push(await open(channel,'grid-'+channel));
+  for(const channel of [0,1,3,4,5]) assert.equal((await streams[channel].next()).kind,1);
   assert.equal((await streams[2].next()).kind,3);
   await manager.stop({slot:'grid-0',lease:streams[0].lease});
-  for(const channel of [1,3]) assert.equal((await streams[channel].next()).kind,2);
+  for(const channel of [1,3,4,5]) assert.equal((await streams[channel].next()).kind,2);
+  const replacement=await open(6,'grid-6');
+  assert.equal((await replacement.next()).kind,1);
   const archive=await manager.archive({id:'fixture',channel:0,begin:'2026-11-04 00:00:00',end:'2026-11-04 23:59:59'});
   assert.equal(archive.files.length,1);assert.equal(manager.status().devices[0].connected,true);
-  assert.deepEqual(manager.status().streams.map(stream=>stream.slot).sort(),['grid-1','grid-3']);
+  assert.deepEqual(manager.status().streams.map(stream=>stream.slot).sort(),['grid-1','grid-3','grid-4','grid-5','grid-6']);
 });
 
 test('replacing an unused URL invalidates its token and a stale stop cannot cancel a new lease',async t=>{

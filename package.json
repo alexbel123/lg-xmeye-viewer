@@ -1,8 +1,8 @@
 {
   "name": "lg-xmeye-viewer",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
-  "description": "Open-source LG webOS CCTV viewer for XMEye-compatible DVRs: local DVRIP, H.264/H.265 and four-camera live view",
+  "description": "Open-source LG webOS CCTV viewer for XMEye-compatible DVRs: local DVRIP, H.264/H.265 and six-camera live view",
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",

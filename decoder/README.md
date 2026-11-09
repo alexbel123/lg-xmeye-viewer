@@ -2,7 +2,7 @@
 
 The scalar and SIMD WebAssembly decoders are built from **FFmpeg 8.1.3**, with
 the project's small C adapter in `viewer_decoder.c`. No Jessibuca/libavc/libhevc
-prebuilt libraries are used in version 0.3.3. Both variants decode H.264 and HEVC
+prebuilt libraries are used starting with version 0.3.3. Both variants decode H.264 and HEVC
 Annex-B access units to 8-bit YUV420. Each worker owns its decoder and memory.
 
 ## Rebuild
@@ -41,7 +41,7 @@ verified runtime-source file count, compiler version, configure options and
 artifact hashes. Do not modify generated files manually.
 
 `test/decoder.test.cjs` checks scalar/SIMD H.264 and HEVC, delayed B-frame flush,
-pixel hashes against native FFmpeg, four independent instances, invalid state
+pixel hashes against native FFmpeg, six independent instances, invalid state
 and codec reinitialization. Browser integration is tested separately with
 synthetic recorders. The software decoder accepts only 8-bit YUV420 and a pixel
 budget of 1920×1080; memory grows from 32 MiB up to a maximum 256 MiB per worker.

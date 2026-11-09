@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4 — 2026-11-09
+
+- Raise the working UI and service limit to six concurrent cameras; reject a seventh while retaining the active six.
+- Use a 3×2 grid for five/six tiles and show the service-advertised stream limit.
+- Verify six independent decoder instances, service slots, camera failure/removal and browser H.264/H.265 multiview.
+- Update user documentation and screenshots. No physical-TV deployment was performed.
+
 ## 0.3.3 — 2026-11-09
 
 - Source-built FFmpeg 8.1.3 scalar/SIMD decoders with the project's C adapter.

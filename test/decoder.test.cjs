@@ -55,13 +55,13 @@ for(const variant of ['scalar','simd'])for(const codec of ['h264','h265'])for(co
     }finally{decoder.close();}
   });
 }
-test('four decoder instances preserve independent H.264/H.265 state',async()=>{
-  const codecs=['h264','h265','h264','h265'],inputs=codecs.map(codec=>packets(codec));
+test('six decoder instances preserve independent H.264/H.265 state',async()=>{
+  const codecs=['h264','h265','h264','h265','h264','h265'],inputs=codecs.map(codec=>packets(codec));
   const decoders=await Promise.all(codecs.map(codec=>create('simd',codec)));
   try{
-    for(let i=0;i<72;i++)for(let slot=0;slot<4;slot++)decoders[slot].push(inputs[slot].units[i],i);
+    for(let i=0;i<72;i++)for(let slot=0;slot<codecs.length;slot++)decoders[slot].push(inputs[slot].units[i],i);
     decoders.forEach(decoder=>decoder.flush());
-    for(let slot=0;slot<4;slot++)assert.equal(hash(Buffer.concat(decoders[slot].frames.map(frame=>frame.data))),hash(expected(inputs[slot].filename)));
+    for(let slot=0;slot<codecs.length;slot++)assert.equal(hash(Buffer.concat(decoders[slot].frames.map(frame=>frame.data))),hash(expected(inputs[slot].filename)));
   }finally{decoders.forEach(decoder=>decoder.close());}
 });
 test('decoder rejects invalid state and supports codec reinitialization',async()=>{
