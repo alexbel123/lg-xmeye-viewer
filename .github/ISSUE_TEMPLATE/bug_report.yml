@@ -1,0 +1,36 @@
+name: Bug report / Ошибка
+description: Report a reproducible problem without private device data.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Не добавляйте пароли, хеши, IP/MAC-адреса, серийные номера, токены или реальное видео.
+        Remove credentials, addresses, serial numbers, tokens and real footage. Security vulnerabilities belong in private GitHub Security reports.
+  - type: input
+    id: version
+    attributes:
+      label: App version / Версия
+      placeholder: "0.3.2"
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: TV model and webOS / Модель и webOS
+      description: Model and software version only. No serial number or MAC address.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and observed result / Шаги и результат
+      description: Include expected behavior and sanitized error text; use synthetic fixtures where possible.
+    validations:
+      required: true
+  - type: textarea
+    id: stream
+    attributes:
+      label: Stream details / Параметры потока
+      description: Codec, resolution, fps, number of simultaneous channels. No actual video or account data.

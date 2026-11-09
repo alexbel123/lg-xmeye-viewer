@@ -1,0 +1,5 @@
+{
+  "id": "local.xmeye.viewer.service",
+  "description": "Local recorder connection and video service",
+  "services": [{ "name": "local.xmeye.viewer.service", "description": "XMEye viewer service" }]
+}

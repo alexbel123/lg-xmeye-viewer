@@ -1,0 +1,16 @@
+{
+  "id": "local.xmeye.viewer",
+  "version": "0.3.2",
+  "vendor": "Local Viewer",
+  "type": "web",
+  "main": "index.html",
+  "title": "Камеры",
+  "appDescription": "Просмотр регистраторов XMEye в локальной сети",
+  "icon": "icon.png",
+  "largeIcon": "icon-large.png",
+  "iconColor": "#161d1a",
+  "bgColor": "#101613",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": false,
+  "requiredACG": []
+}

@@ -1,0 +1,10 @@
+{
+  "purpose": "Interoperability reference; no vendor application source is included",
+  "references": [
+    "https://github.com/OpenIPC/python-dvr/blob/master/dvrip.py",
+    "https://github.com/alexshpilkin/dvrip/tree/master/dvrip",
+    "https://webostv.developer.lge.com/develop/guides/js-service-basics",
+    "https://webostv.developer.lge.com/develop/specifications/app-resolution",
+    "https://webostv.developer.lge.com/develop/references/appinfo-json"
+  ]
+}

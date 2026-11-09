@@ -1,0 +1,58 @@
+Protocol interoperability references:
+  OpenIPC/python-dvr, https://github.com/OpenIPC/python-dvr
+  AlexxIT/go2rtc, https://github.com/AlexxIT/go2rtc
+
+The implementation uses protocol framing, field meanings and media layout
+documented by these projects. It does not contain the XMEye mobile application.
+
+OpenIPC/python-dvr reference license:
+
+MIT License
+
+Copyright (c) 2017 Eliot Kent Woodrich
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+The webOS runtime provides webos-service on the TV. The native development
+FFmpeg executable is a test dependency and is not shipped in the application.
+
+Software video decoder component: Jessibuca 4.0.0
+https://github.com/langhuihui/jessibuca
+https://www.npmjs.com/package/jessibuca/v/4.0.0
+
+Decoder JavaScript and WebAssembly files are downloaded from the original npm
+registry only when the user runs tools/vendor-decoder.py. They are excluded
+from this public repository and its source-only release archives. The actual
+upstream LICENSE is GNU GPL version 3; the npm metadata's MIT label does not
+replace that license. The license text is preserved in app/vendor/decoder/COPYING.
+The downloaded package includes decoder sources, build scripts and precompiled
+third-party static dependencies. Complete corresponding source and reproducible
+builds of those static libraries have not been verified; no decoder binaries
+or IPK packages are redistributed in the initial public release.
+The local setup script changes only the ES-module export in two generated
+loaders to expose a classic worker factory. WebAssembly binaries are unchanged.
+The SIMD build uses libavc/libhevc; the scalar build uses FFmpeg video libraries.
+See docs/LICENSING.md for distribution scope and outstanding binary-build work.
+Upstream component source references:
+https://github.com/ittiam-systems/libavc
+https://github.com/ittiam-systems/libhevc
+https://ffmpeg.org/
+
+Original npm package SHA-256:
+d201aa5e064cbea1be4ba8da1b8fd5e9c2899cd1a20801ed29c30d97d7b691b4

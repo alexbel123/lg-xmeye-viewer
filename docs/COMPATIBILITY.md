@@ -1,0 +1,23 @@
+# Compatibility / Совместимость
+
+| Area | Current evidence and limits |
+| --- | --- |
+| Target | LG webOS 22+; not a guarantee for every TV or firmware |
+| Physical TV | v0.3.1 live/multiview tested on LG OLED65C2RLA; service/runtime checks on OLED65B3RLA |
+| Installation | Hardware installation used root access; ordinary Developer Mode/store sandbox not validated |
+| Networking | Direct IPv4/DVRIP TCP, usually port 34567; routed subnets supported in principle; no cloud/P2P/serial login |
+| DVR/NVR | XMEye-compatible protocol; protocol/firmware variants may differ; not every branded recorder is supported |
+| Live view | One recorder selected at a time, up to four concurrent selected channels |
+| Grid video | Extra1 substream; native TV uses WebAssembly workers/WebGL, performance depends on TV and stream settings |
+| Main/archive | MediaSource fragmented MP4, H.264/H.265 subject to platform codec support; reordered B-frames rejected |
+| Archive | Search/playback tested on generated recordings; real private archives were not examined |
+| Controls | Arrow keys, OK, Back, pointer, CH+/CH−; UI currently Russian |
+| Layout | HD/FHD logical canvas; browser layout tests do not prove every physical panel or accessibility use case |
+| Missing | Audio, PTZ, cloud login, pause/export, multi-recorder grids |
+| v0.4 concept | Layouts 1/2/4/6, named sets and enlarged grid tile are shown in a separate synthetic prototype; not all shipped |
+
+Historical C2 test: four HEVC 800×448 channels at approximately 15/15/15/20 fps for 45 seconds, six hot switches. This is not an endurance benchmark. See [verification.json](../verification.json), which describes the **0.3.1 baseline**, not a new 0.3.2 physical-TV test.
+
+The native service's default credential directory is `/media/internal/local.xmeye.viewer/`. Its writability in the standard app sandbox is unresolved. Filesystem behavior must be validated before claiming normal-user/store installation support. Do not interpret a successful rooted-TV test as store readiness.
+
+Useful official references: [LG JS services](https://webostv.developer.lge.com/develop/guides/js-service-basics), [graphics resolution](https://webostv.developer.lge.com/develop/specifications/app-resolution), [Developer Mode](https://webostv.developer.lge.com/develop/getting-started/developer-mode-app).

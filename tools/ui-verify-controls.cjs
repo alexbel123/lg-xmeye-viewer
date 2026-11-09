@@ -1,0 +1,66 @@
+async page => {
+  const checks = {};
+  await page.getByRole('tab', { name: 'Прямой эфир', exact: true }).click();
+  await page.getByRole('button', { name: '01 Тестовая камера 1', exact: true }).click();
+  await page.waitForFunction(() => document.getElementById('video').currentTime > 0.5);
+  await page.getByRole('button', { name: 'На весь экран', exact: true }).click();
+  if (!await page.locator('body').evaluate(element => element.classList.contains('fullscreen'))) throw new Error('Fullscreen did not open');
+  await page.keyboard.press('ArrowLeft');
+  if (!await page.locator('#player-shell').evaluate(element => element.contains(document.activeElement))) throw new Error('Remote focus escaped fullscreen');
+  await page.keyboard.press('Escape');
+  if (await page.locator('body').evaluate(element => element.classList.contains('fullscreen'))) throw new Error('Back did not leave fullscreen');
+  await page.keyboard.press('Escape');
+  await page.getByRole('heading', { name: 'Выберите камеру', exact: true }).waitFor();
+  checks.fullscreenAndBack = true;
+  const existingFavorite = page.getByRole('button', { name: 'Убрать из избранного: Тестовая камера 1', exact: true });
+  if (await existingFavorite.isVisible()) await existingFavorite.click();
+  await page.getByRole('button', { name: 'В избранное: Тестовая камера 1', exact: true }).click();
+  await page.getByRole('button', { name: 'Только избранные', exact: true }).click();
+  if (await page.locator('.channel-select').count() !== 1) throw new Error('Favorites filter failed');
+  await page.getByRole('button', { name: 'Только избранные', exact: true }).click();
+  if (await page.locator('.channel-select').count() !== 4) throw new Error('Channel list did not restore');
+  checks.favorites = true;
+  await page.getByRole('tab', { name: 'Записи', exact: true }).click();
+  await page.locator('#archive-view').waitFor({ state: 'visible' });
+  await page.getByRole('combobox', { name: 'Камера', exact: true }).selectOption('0');
+  await page.getByLabel('Дата', { exact: true }).fill('2026-11-04');
+  await page.getByLabel('С', { exact: true }).fill('12:00');
+  await page.getByLabel('До', { exact: true }).fill('12:10');
+  await page.getByRole('button', { name: 'Найти записи', exact: true }).click();
+  await page.locator('.recording').waitFor();
+  if (await page.locator('.recording').count() !== 1) throw new Error('Fixture recording missing');
+  checks.syntheticArchiveSearch = true;
+  await page.locator('.recording').click();
+  await page.waitForFunction(() => { const video = document.getElementById('video'); return video.readyState >= 2 && video.currentTime > 1; }, null, { timeout: 15000 });
+  await page.getByRole('heading', { name: 'Запись завершена', exact: true }).waitFor({ timeout: 15000 });
+  checks.syntheticArchivePlayback = true;
+  await page.getByRole('button', { name: 'Подключено', exact: true }).click();
+  await page.getByRole('button', { name: 'Подключить', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Настройки устройства', exact: true }).click();
+  await page.getByRole('button', { name: 'Удалить', exact: true }).click();
+  await page.locator('#device-modal').waitFor({ state: 'hidden' });
+  if (await page.locator('.device-button').count() !== 0) throw new Error('Fixture profile not removed');
+  checks.disconnectAndDeleteProfile = true;
+  await page.setViewportSize({ width: 1280, height: 720 });
+  const fitsHD = await page.evaluate(() => document.documentElement.scrollWidth === innerWidth && document.documentElement.scrollHeight === innerHeight);
+  if (!fitsHD) throw new Error('Layout overflows 1280x720');
+  checks.hdLayout = true;
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.evaluate(() => localStorage.setItem('viewer.profiles', JSON.stringify([
+    { id: 'demo-1', title: 'Регистратор 1', host: '192.0.2.10', port: 34567, favorites: [] },
+    { id: 'demo-2', title: 'Регистратор 2', host: '198.51.100.10', port: 34567, favorites: [] }
+  ])));
+  await page.reload();
+  await page.getByRole('button', { name: 'Регистратор 1 192.0.2.10', exact: true }).focus();
+  await page.keyboard.press('ArrowDown');
+  if (!await page.getByRole('button', { name: 'Регистратор 2 198.51.100.10', exact: true }).evaluate(element => element === document.activeElement)) throw new Error('Remote down navigation failed');
+  await page.keyboard.press('Enter');
+  await page.getByRole('heading', { name: 'Регистратор 2', exact: true }).waitFor();
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('Enter');
+  await page.getByRole('heading', { name: 'Регистратор 1', exact: true }).waitFor();
+  checks.remoteKeyboard = true;
+  await page.evaluate(() => localStorage.removeItem('viewer.profiles'));
+  await page.reload();
+  return checks;
+}

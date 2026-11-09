@@ -1,0 +1,273 @@
+{
+  "date": "2026-11-09",
+  "version": "0.3.1",
+  "unit_and_integration_tests": {
+    "passed": 23,
+    "failed": 0
+  },
+  "synthetic_video": {
+    "h264_mp4_ffmpeg_decode": "passed",
+    "h265_mp4_ffmpeg_decode": "passed",
+    "h264_browser_playback": "passed: 640x360",
+    "h265_browser_playback": "passed: 640x360",
+    "reordered_frames": "explicitly rejected; unsupported in 0.1"
+  },
+  "browser_ui": {
+    "profile_creation_and_removal": "passed",
+    "incorrect_password_handling": "passed",
+    "synthetic_login_and_channel_list": "passed",
+    "password_not_saved_to_profile_storage": "not stored in browser localStorage; persisted encrypted by the service",
+    "fullscreen_and_back": "passed",
+    "remote_arrow_and_ok_navigation": "passed",
+    "favorites": "passed",
+    "synthetic_recording_search_and_playback": "passed",
+    "layout_1920x1080": "passed",
+    "layout_1280x720": "passed",
+    "credentials_settings": "passed, including 1280x720 layout",
+    "responsive_layout": {
+      "environment": "Chrome browser with synthetic recorder; not physical TV display validation",
+      "viewports": [
+        "960x540",
+        "1280x600",
+        "1280x720",
+        "1366x768",
+        "1600x900",
+        "1920x1080"
+      ],
+      "result": "passed: no document overflow, 64 channels, nine recorder profiles, long titles, settings, archive filters and fullscreen",
+      "remote_navigation": "passed: all 64 channels and nine profiles reached with arrows; settings Save reached after scrolling",
+      "video_fit": "contain; synthetic 640x360 H.264 at every viewport",
+      "high_dpi_raster": "3840x2160 browser raster at 1920x1080 logical viewport and DPR=2",
+      "packaged_javascript": "same six viewport scenarios passed with actual HTML, CSS and minified JavaScript extracted from the FHD IPK and served over HTTP",
+      "package_graphics_resolutions": [
+        "1920x1080",
+        "1280x720"
+      ],
+      "lg_resolution_reference": "https://webostv.developer.lge.com/develop/specifications/app-resolution",
+      "baseline_version": "0.2.1; grid layout independently checked in 0.3.1 at 960x540, 1280x720, 1366x768, 1920x1080"
+    },
+    "multiview_h264": {
+      "passed": true,
+      "hotSwitches": 12,
+      "simultaneousChannels": 4,
+      "layouts": [
+        "960x540",
+        "1280x720",
+        "1366x768",
+        "1920x1080"
+      ],
+      "fullscreenGrid": true,
+      "backRestoresInterface": true,
+      "removeAndReaddWithoutStoppingPeers": true,
+      "browserErrors": []
+    },
+    "multiview_hevc": {
+      "passed": true,
+      "hotSwitches": 12,
+      "simultaneousChannels": 4,
+      "layouts": [
+        "960x540",
+        "1280x720",
+        "1366x768",
+        "1920x1080"
+      ],
+      "fullscreenGrid": true,
+      "backRestoresInterface": true,
+      "gridChannelKeys": true,
+      "fifthCameraLimit": true,
+      "removeAndReaddWithoutStoppingPeers": true,
+      "browserErrors": []
+    }
+  },
+  "native_service_code": {
+    "device": "LG OLED65B3RLA",
+    "runtime": "Node.js v16.20.2 / Linux",
+    "localhost_synthetic_login_channels_video_and_search": "passed",
+    "syntax": "ES2019 grammar checked for webOS 22 / Node.js 12.21 compatibility",
+    "webos_service_bus_and_packaged_app_on_tv": "passed on LG OLED65C2RLA; see native_installation",
+    "credential_storage_after_restart": "passed on TV with synthetic data"
+  },
+  "native_installation": {
+    "date": "2026-11-09",
+    "device": "LG OLED65C2RLA",
+    "firmware": "33.31.68",
+    "sdk": "10.3.1",
+    "node": "v16.20.2",
+    "app_id": "local.xmeye.viewer",
+    "version": "0.3.1",
+    "graphics_resolution": "1920x1080",
+    "installer_confirmed_installed": true,
+    "application_manager_launch": "passed",
+    "foreground_application": "local.xmeye.viewer",
+    "native_service_bootstrap": "passed: version 0.3.1, native true",
+    "real_recorder_login_or_video": "passed using saved credentials on TV; no password or digest copied to development machine"
+  },
+  "real_recorder_authorization": "passed on TV with its existing saved account",
+  "real_recorder_playback": "live only: six switches and four concurrent HEVC channels, 800x448",
+  "real_recordings_viewed": false,
+  "lg_content_store_publication": "not performed",
+  "known_version_limits": [
+    "Maximum four live channels from the selected recorder",
+    "Native grid uses the additional stream Extra1",
+    "No sound, PTZ, cloud-serial login, pause or export",
+    "No B-frame timestamp reconstruction in hardware MP4 path",
+    "Main stream and archive use the television MediaSource decoder"
+  ],
+  "credential_storage": {
+    "separate_accounts_per_recorder": "passed",
+    "service_and_app_restart_reconnect_without_password_prompt": "passed in browser UI with two distinct synthetic accounts",
+    "rename_retains_saved_password": "passed",
+    "editing_or_deleting_one_preserves_others": "passed",
+    "manual_login_is_remembered_after_success": "passed",
+    "incorrect_login_does_not_overwrite_saved_credential": "passed",
+    "forget_saved_credentials_restores_login_dialog": "passed",
+    "at_rest": "AES-256-GCM; XMEye hash stored instead of original password",
+    "windows_key_protection": "DPAPI CurrentUser verified",
+    "native_tv_persistence": "verified on LG OLED65B3RLA / Node v16.20.2 with synthetic accounts",
+    "native_key_and_vault_permissions": "0600 verified",
+    "browser_profile_storage": "no password or credential hash",
+    "real_credentials_used": "Existing saved account was used on TV for 0.3.1 verification; no original password or digest was read back"
+  },
+  "native_multiview": {
+    "hot_switches": [
+      {
+        "channel": 0,
+        "playable": true,
+        "width": 800,
+        "height": 448,
+        "frames": 12,
+        "error": null,
+        "connected": true
+      },
+      {
+        "channel": 1,
+        "playable": true,
+        "width": 800,
+        "height": 448,
+        "frames": 10,
+        "error": null,
+        "connected": true
+      },
+      {
+        "channel": 2,
+        "playable": true,
+        "width": 800,
+        "height": 448,
+        "frames": 7,
+        "error": null,
+        "connected": true
+      },
+      {
+        "channel": 3,
+        "playable": true,
+        "width": 800,
+        "height": 448,
+        "frames": 11,
+        "error": null,
+        "connected": true
+      },
+      {
+        "channel": 0,
+        "playable": true,
+        "width": 800,
+        "height": 448,
+        "frames": 9,
+        "error": null,
+        "connected": true
+      },
+      {
+        "channel": 2,
+        "playable": true,
+        "width": 800,
+        "height": 448,
+        "frames": 8,
+        "error": null,
+        "connected": true
+      }
+    ],
+    "grid": {
+      "tiles": [
+        {
+          "channel": 2,
+          "width": 800,
+          "height": 448,
+          "frames": 96,
+          "advancing": true,
+          "error": null
+        },
+        {
+          "channel": 0,
+          "width": 800,
+          "height": 448,
+          "frames": 93,
+          "advancing": true,
+          "error": null
+        },
+        {
+          "channel": 1,
+          "width": 800,
+          "height": 448,
+          "frames": 93,
+          "advancing": true,
+          "error": null
+        },
+        {
+          "channel": 3,
+          "width": 800,
+          "height": 448,
+          "frames": 129,
+          "advancing": true,
+          "error": null
+        }
+      ],
+      "connected": true,
+      "fullscreen": true,
+      "grid": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "viewport": [
+        1920,
+        1080
+      ]
+    },
+    "stability": {
+      "durationSeconds": 45,
+      "backRestoredInterface": true,
+      "fullscreen": true,
+      "connected": true,
+      "tiles": [
+        {
+          "channel": 2,
+          "frames": 1182,
+          "error": null,
+          "fps": 14.977777777777778
+        },
+        {
+          "channel": 0,
+          "frames": 1179,
+          "error": null,
+          "fps": 14.977777777777778
+        },
+        {
+          "channel": 1,
+          "frames": 1179,
+          "error": null,
+          "fps": 15
+        },
+        {
+          "channel": 3,
+          "frames": 1577,
+          "error": null,
+          "fps": 20
+        }
+      ]
+    },
+    "private_frames_recorded": false,
+    "credentials_exported": false,
+    "renderer": "SIMD WebAssembly decoder workers and WebGL; no simultaneous native video pipelines"
+  },
+  "publication_note": "Historical validation summary; private addresses removed. Current publication checks run separately in CI."
+}

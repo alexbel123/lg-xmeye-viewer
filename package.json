@@ -1,0 +1,37 @@
+{
+  "name": "lg-xmeye-viewer",
+  "version": "0.3.2",
+  "private": true,
+  "description": "Open-source LG webOS CCTV viewer for XMEye-compatible DVRs: local DVRIP, H.264/H.265 and four-camera live view",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexbel123/lg-xmeye-viewer.git"
+  },
+  "homepage": "https://github.com/alexbel123/lg-xmeye-viewer#readme",
+  "bugs": {
+    "url": "https://github.com/alexbel123/lg-xmeye-viewer/issues"
+  },
+  "keywords": [
+    "lg",
+    "webos",
+    "cctv",
+    "xmeye",
+    "dvrip",
+    "nvr",
+    "ip-camera",
+    "h265",
+    "multiview"
+  ],
+  "scripts": {
+    "start": "node tools/dev-server.cjs",
+    "build": "node tools/build.cjs",
+    "build:hd": "node tools/build.cjs --hd",
+    "setup:decoder": "python tools/vendor-decoder.py",
+    "check:publication": "python tools/check-publication.py",
+    "test": "node --test test/dvrip.test.cjs test/media.test.cjs test/credentials.test.cjs test/streams.test.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

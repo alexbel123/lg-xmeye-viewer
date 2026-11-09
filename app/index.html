@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:*; media-src blob:; object-src 'none'; base-uri 'none'">
+  <title>Камеры</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <aside class="sidebar" aria-label="Регистраторы">
+      <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="8" width="19" height="16" rx="4"/><path d="m22 13 7-4v14l-7-4"/></svg><span>Камеры<span class="brand-subtitle">Локальная сеть</span></span></div>
+      <div class="section-label">УСТРОЙСТВА <span id="device-count"></span></div>
+      <nav id="device-list" class="device-list"></nav>
+      <button type="button" class="add-device" data-action="add"><span aria-hidden="true">+</span> Добавить устройство</button>
+      <div class="sidebar-bottom"><span class="network-dot"></span><span id="service-state">Запуск приложения</span><span class="version">0.3.2</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <div><div class="eyebrow">ВИДЕОНАБЛЮДЕНИЕ</div><h1 id="device-title">Регистратор</h1><div class="device-address" id="device-address"></div></div>
+        <div class="header-right"><time id="clock"></time><button class="icon-button" type="button" data-action="edit" aria-label="Настройки устройства"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg></button></div>
+      </header>
+      <div class="view-bar">
+        <div role="tablist" aria-label="Режим просмотра" class="tabs"><button type="button" role="tab" id="live-tab" class="tab active" data-action="view-live" aria-selected="true">Прямой эфир</button><button type="button" role="tab" id="archive-tab" class="tab" data-action="view-archive" aria-selected="false">Записи</button></div>
+        <button type="button" class="connection-button" data-action="connection" id="connection-button"><span class="status-dot"></span><span id="connection-text">Подключить</span></button>
+      </div>
+
+      <section id="live-view" class="workspace" aria-label="Прямой эфир">
+        <div class="player-column">
+          <div class="camera-toolbar"><button type="button" class="grid-toggle" id="grid-toggle" data-action="grid" aria-pressed="false">Сетка камер</button><span id="grid-summary">Одиночный просмотр</span><button type="button" class="grid-screen" data-action="fullscreen">Скрыть интерфейс</button></div>
+          <div class="camera-grid" id="camera-grid" data-count="1" tabindex="-1" aria-label="Поле камер">
+          <div class="player" id="player-shell">
+            <video id="video" autoplay muted playsinline aria-label="Видео выбранной камеры"></video>
+            <canvas id="main-canvas" aria-label="Видео выбранной камеры" hidden></canvas>
+            <div class="player-top" id="player-caption" hidden><span class="live-label" id="player-mode">ЭФИР</span><span id="player-camera"></span><span id="video-info"></span></div>
+            <div class="player-empty" id="player-empty">
+              <div class="camera-symbol"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="16" width="33" height="32" rx="7"/><path d="m41 27 15-8v26l-15-8"/><path d="M19 27h11M19 35h6"/></svg></div>
+              <h2 id="empty-title">Всё начинается с подключения</h2><p id="empty-text">Выберите регистратор и войдите,<br>чтобы увидеть свои камеры.</p>
+              <button type="button" class="button primary" id="empty-action" data-action="connect">Подключить регистратор <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="player-loading" id="player-loading" hidden><div class="loading-line"></div><p>Получаем видео</p></div>
+            <div class="player-controls" id="player-controls" hidden><button type="button" class="overlay-button" data-action="stop" aria-label="Остановить видео"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/></svg><span>Стоп</span></button><span class="video-time" id="video-time">00:00</span><button type="button" class="overlay-button" data-action="fullscreen" aria-label="На весь экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></svg><span>На весь экран</span></button></div>
+          </div>
+          <button type="button" class="screen-return" data-action="fullscreen" aria-label="Показать интерфейс">Показать интерфейс</button>
+          </div>
+          <div class="under-player"><div><span class="status-dot" id="detail-dot"></span><span id="detail-status">Ожидает подключения</span></div><button type="button" class="quality-button" data-action="quality" id="quality-button">Дополнительный поток <span aria-hidden="true">⌄</span></button></div>
+        </div>
+        <aside class="channels-panel" aria-label="Каналы"><div class="channels-heading"><h2>Каналы <span id="channel-count"></span></h2><button type="button" class="icon-button compact" data-action="favorites" id="favorites-filter" aria-label="Только избранные" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/></svg></button></div><div id="channels" class="channels"><div class="channels-empty">Каналы появятся<br>после подключения</div></div></aside>
+      </section>
+
+      <section id="archive-view" class="archive-view" aria-label="Записи регистратора" hidden>
+        <div class="archive-heading"><div><h2>Записи на регистраторе</h2><p>Выберите камеру и период.</p></div><span class="archive-icon"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="8" width="28" height="27" rx="4"/><path d="M6 17h28M13 4v8M27 4v8m-13 12h5v5h-5"/></svg></span></div>
+        <form id="archive-form" class="archive-filters"><label>Камера<select id="archive-channel" name="channel" required><option value="">Подключите устройство</option></select></label><label>Дата<input id="archive-date" name="date" type="date" required></label><label>С<input id="archive-from" name="from" type="time" value="00:00" required></label><label>До<input id="archive-to" name="to" type="time" value="23:59" required></label><button type="submit" class="button primary" id="archive-search">Найти записи</button></form>
+        <div class="inline-error" id="archive-error" role="alert" hidden></div>
+        <div class="recordings-header"><span>ПЕРИОД ЗАПИСИ</span><span id="recordings-count"></span></div><div id="recordings" class="recordings"><div class="archive-empty"><h3>Выберите период</h3><p>Здесь появятся найденные записи.</p></div></div>
+        <button type="button" class="button secondary load-more" id="load-more" data-action="load-more" hidden>Показать ещё</button>
+      </section>
+      <footer class="remote-hints"><span><kbd>← ↑ ↓ →</kbd> Навигация</span><span><kbd>OK</kbd> Выбрать</span><span><kbd>Назад</kbd> Вернуться</span><span id="footer-note">Видео остаётся в вашей сети</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="login-modal" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="modal-kicker">ПОДКЛЮЧЕНИЕ</div><h2 id="login-title">Вход в регистратор</h2><p id="login-description"></p><form id="login-form"><label>Пользователь<input name="username" id="login-username" autocomplete="username" value="admin" maxlength="64" required></label><label>Пароль<input name="password" id="login-password" type="password" autocomplete="current-password" maxlength="128"></label><p class="field-note">Данные сохранятся для этого регистратора после успешного входа.</p><div class="inline-error" id="login-error" role="alert" hidden></div><div class="modal-actions"><button type="button" class="button secondary" data-action="close-modal">Отмена</button><button type="submit" class="button primary" id="login-submit">Подключить</button></div></form></section></div>
+
+  <div class="modal-backdrop" id="device-modal" hidden><section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="device-modal-title"><div class="modal-kicker">УСТРОЙСТВО</div><h2 id="device-modal-title">Новый регистратор</h2><form id="device-form"><label>Название<input id="profile-title" name="title" maxlength="48" required></label><div class="form-pair"><label>IP-адрес<input id="profile-host" name="host" inputmode="decimal" placeholder="IP регистратора" maxlength="15" required></label><label>Порт XMEye<input id="profile-port" name="port" type="number" min="1" max="65535" value="34567" required></label></div><label>Количество каналов<input id="profile-channels" name="channels" type="number" min="0" max="256" value="0"></label><p class="field-note">0 — определить автоматически после входа.</p><div class="form-pair"><label>Пользователь<input id="profile-username" name="username" autocomplete="off" placeholder="admin" maxlength="64"></label><label>Пароль<input id="profile-password" name="password" type="password" autocomplete="new-password" maxlength="128"></label></div><p class="field-note" id="credential-note"></p><button type="button" class="credential-clear" id="forget-credentials" data-action="forget-credentials" hidden>Удалить данные входа</button><div class="inline-error" id="profile-error" role="alert" hidden></div><div class="modal-actions"><button type="button" class="button danger" id="remove-device" data-action="remove" hidden>Удалить</button><button type="button" class="button secondary" data-action="close-modal">Отмена</button><button type="submit" class="button primary">Сохранить</button></div></form></section></div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+  <script src="player.js"></script><script src="software-player.js"></script><script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability / Уязвимость
+    url: https://github.com/alexbel123/lg-xmeye-viewer/security/advisories/new
+    about: Use private reporting; do not expose credentials or device data publicly.

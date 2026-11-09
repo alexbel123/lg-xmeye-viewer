@@ -1,0 +1,9 @@
+# Демонстрационные кадры камер
+
+Метод: встроенный инструмент ImageGen, генерация нового изображения, непрозрачный фон. Содержимое вымышленное; реальные камеры и частные записи не использовались.
+
+Результат: `assets/cameras.png`.
+
+Промпт:
+
+> Generate one photorealistic contact sheet of six fictional security camera feeds for a polished CCTV television application mockup. This is only the background photography asset, absolutely no application UI, no icons, no numbers, no text, no camera timestamps, no borders or gutters. Overall image landscape 1536x1024 or similar, divided into a precise 3-column by 2-row equal grid, every panel a distinct wide-angle high-mounted security camera view, photorealistic institutional surveillance footage. Top-left: clean light-grey warehouse entrance driveway with a parked dark grey car and simple modern industrial facade, pale daylight. Top-middle: warehouse interior aisle with tall pallet racks and cardboard cartons, neutral light, perspective down long aisle. Top-right: industrial loading yard with white truck and loading docks, elevated view, overcast daylight. Bottom-left: empty clean office reception entrance with glass door, pale concrete and timber accents, elevated corner view. Bottom-middle: outdoor car park with white line markings and a few understated cars and distant trees. Bottom-right: long indoor warehouse service corridor with shelves, concrete floor and overhead fluorescent fixtures. Consistent cool-neutral grey blue colour grade with natural realistic materials, slightly desaturated, realistic mild security-camera grain, restrained dynamic range, medium image detail, no people or faces, no readable branding, no dramatic/cinematic lighting. Fill every panel edge to edge; keep exact rectangular 3x2 division so it can be used as a background atlas.
