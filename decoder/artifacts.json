@@ -1,0 +1,16 @@
+{
+  "version": "0.3.3",
+  "url": "https://github.com/alexbel123/lg-xmeye-viewer/releases/download/v0.3.3/lg-xmeye-decoder-0.3.3.zip",
+  "sha256": "3bed26ce2a2882e99fc26e1dde323cdce9a326c9b7b158eb86e80e921cc63c81",
+  "files": {
+    "videodec.js": "ac229954b49d5e6ba2dd044e1a01a1ef67304b7e353d05e25073573e23fcb453",
+    "videodec.wasm": "8f2bc1005ea722e5dcbc1716a6f3145980118fe202609fd393d63d330dac218a",
+    "videodec_simd.js": "9b4d43eff48cb31dadd62d259fd8e626511cf5610b9309af7b01a1ff5bbe73c4",
+    "videodec_simd.wasm": "8522dad3da13a27435bf6dc2c3b8f902c449abb0367ed130f4aafe28bba40e16",
+    "build-manifest.json": "291ceb0ce346f9d9efb3703a86c3fbaaf031dd820a83a8af00f48dbcf75500f5",
+    "COPYING": "8b1ba204bb69a0ade2bfcf65ef294a920f6bb361b317dba43c7ef29d96332b9b",
+    "COPYING.FFMPEG.LGPLv2.1": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+    "COPYING.EMSCRIPTEN": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86",
+    "COPYING.MUSL": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af"
+  }
+}

@@ -4,7 +4,7 @@
 
 ## Что доступно сейчас
 
-Публичный выпуск содержит исходники. Это приложение webOS, а не Android APK. Готовые IPK пока не распространяются: см. [лицензии](LICENSING.md). Сначала прочитайте [совместимость](COMPATIBILITY.md): обычный Developer Mode без root ещё не проверен, включая права записи хранилища сервиса.
+Скачайте готовый пакет из [выпуска v0.3.3](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.3.3): `local.xmeye.viewer_0.3.3_all.ipk` — интерфейс FHD; `local.xmeye.viewer_0.3.3_1280x720.ipk` — интерфейс HD. Проверяйте файл по `SHA256SUMS-v0.3.3.txt`. Это приложение webOS, а не Android APK. Для готового IPK шаг сборки ниже можно пропустить. Сначала прочитайте [совместимость](COMPATIBILITY.md): обычный Developer Mode без root ещё не проверен, включая права записи хранилища сервиса.
 
 ## 1. Подготовить компьютер
 
@@ -18,7 +18,7 @@ npm install --global @webos-tools/cli
 npm run build
 ```
 
-Команда загрузки декодера обращается к исходному npm registry и проверяет SHA-256. Сборка создаёт `dist/local.xmeye.viewer_0.3.2_all.ipk`. `npm run build:hd` создаёт вариант с графическим холстом 1280×720. Если CLI не найден, задайте `WEBOS_CLI_DIR` как каталог установленного пакета. PowerShell:
+Команда загрузки декодера обращается к выпуску этого проекта на GitHub и проверяет SHA-256. Сборка создаёт `dist/local.xmeye.viewer_0.3.3_all.ipk`. `npm run build:hd` создаёт вариант с графическим холстом 1280×720. Если CLI не найден, задайте `WEBOS_CLI_DIR` как каталог установленного пакета. PowerShell:
 
 ```powershell
 $env:WEBOS_CLI_DIR = Join-Path (npm root -g) '@webos-tools/cli'
@@ -39,7 +39,7 @@ ares-novacom --device my-tv --getkey
 ## 3. Установить локально собранный пакет
 
 ```sh
-ares-install --device my-tv dist/local.xmeye.viewer_0.3.2_all.ipk
+ares-install --device my-tv dist/local.xmeye.viewer_0.3.3_all.ipk
 ares-launch --device my-tv local.xmeye.viewer
 ```
 
@@ -54,3 +54,7 @@ ares-launch --device my-tv local.xmeye.viewer
 Если телефон видит видео через облако, это не гарантирует доступность IP регистратора с телевизора. Проверьте маршрутизацию между подсетями, порт DVRIP и права просмотра учётной записи. Не публикуйте порт регистратора в интернете ради этого приложения; для удалённого доступа используйте собственную защищённую сеть/VPN.
 
 Удаление приложения может не удалить данные из внешнего каталога сервиса. Очистите сохранённые данные через настройки до передачи телевизора другому владельцу. Подробнее — [приватность](PRIVACY.md).
+
+## Пересобрать декодер из исходников
+
+`python tools/build-decoder.py` собирает FFmpeg и наш адаптер; `npm run test:decoder` сравнивает кадры с эталоном. Нужны Linux/WSL, Python 3.12+ и build-essential. Полные исходники зависимостей находятся в ZIP исходников выпуска. [Команды и закреплённые версии](../decoder/README.md).

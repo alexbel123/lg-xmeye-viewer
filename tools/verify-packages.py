@@ -55,6 +55,11 @@ if source.exists():
     with zipfile.ZipFile(source) as package:
         assert package.testzip() is None
         assert not any(Path(name).suffix in {'.enc', '.key'} or {'output', 'dist', '.secrets', 'ffmpeg-runtime'}.intersection(Path(name).parts) for name in package.namelist())
-        assert json.loads(package.read('lg-xmeye-viewer/verification.json'))['version'] == version
+        assert json.loads(package.read('lg-xmeye-viewer/package.json'))['version'] == version
+        dependencies = json.loads(package.read('lg-xmeye-viewer/decoder/dependencies.json'))
+        for dependency in dependencies.values():
+            data = package.read('lg-xmeye-viewer/third_party/' + dependency['archive'])
+            import hashlib
+            assert hashlib.sha256(data).hexdigest() == dependency['sha256']
     report.append({'file': source.name, 'passed': True})
 print(json.dumps(report))

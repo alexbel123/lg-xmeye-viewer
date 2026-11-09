@@ -1,0 +1,111 @@
+{
+  "version": "0.3.3",
+  "date": "2026-11-09",
+  "environment": "Local Node.js and Windows Chrome with synthetic recorders; no new TV installation",
+  "decoder_pixel_tests": {
+    "passed": 10,
+    "failed": 0,
+    "scalar_and_simd": true,
+    "codecs": [
+      "h264",
+      "h265"
+    ],
+    "b_frames_and_flush": true,
+    "pixel_sha256_matches_native_ffmpeg": true,
+    "four_independent_instances": true
+  },
+  "protocol_media_credentials_stream_tests": {
+    "passed": 23,
+    "failed": 0
+  },
+  "browser": [
+    {
+      "codec": "h264",
+      "result": {
+        "passed": true,
+        "hotSwitches": 12,
+        "simultaneousChannels": 4,
+        "layouts": [
+          "960x540",
+          "1280x720",
+          "1366x768",
+          "1920x1080"
+        ],
+        "fullscreenGrid": true,
+        "backRestoresInterface": true,
+        "gridChannelKeys": true,
+        "fifthCameraLimit": true,
+        "removeAndReaddWithoutStoppingPeers": true,
+        "browserErrors": []
+      }
+    },
+    {
+      "codec": "h265",
+      "result": {
+        "passed": true,
+        "hotSwitches": 12,
+        "simultaneousChannels": 4,
+        "layouts": [
+          "960x540",
+          "1280x720",
+          "1366x768",
+          "1920x1080"
+        ],
+        "fullscreenGrid": true,
+        "backRestoresInterface": true,
+        "gridChannelKeys": true,
+        "fifthCameraLimit": true,
+        "removeAndReaddWithoutStoppingPeers": true,
+        "browserErrors": []
+      }
+    }
+  ],
+  "emscripten_runtime_source_files_verified": 3451,
+  "hardware_performance": "Not measured for the rebuilt decoder; historical TV results apply only to the previous decoder",
+  "packaged_ipk_browser": [
+    {
+      "codec": "h264",
+      "result": {
+        "passed": true,
+        "hotSwitches": 12,
+        "simultaneousChannels": 4,
+        "layouts": [
+          "960x540",
+          "1280x720",
+          "1366x768",
+          "1920x1080"
+        ],
+        "fullscreenGrid": true,
+        "backRestoresInterface": true,
+        "gridChannelKeys": true,
+        "fifthCameraLimit": true,
+        "removeAndReaddWithoutStoppingPeers": true,
+        "browserErrors": []
+      }
+    },
+    {
+      "codec": "h265",
+      "result": {
+        "passed": true,
+        "hotSwitches": 12,
+        "simultaneousChannels": 4,
+        "layouts": [
+          "960x540",
+          "1280x720",
+          "1366x768",
+          "1920x1080"
+        ],
+        "fullscreenGrid": true,
+        "backRestoresInterface": true,
+        "gridChannelKeys": true,
+        "fifthCameraLimit": true,
+        "removeAndReaddWithoutStoppingPeers": true,
+        "browserErrors": []
+      }
+    }
+  ],
+  "packaged_ipk_decoder_pixel_tests": {
+    "passed": 10,
+    "failed": 0
+  }
+}

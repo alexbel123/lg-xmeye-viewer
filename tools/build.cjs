@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const root = path.resolve(__dirname, '..');
 const hd = process.argv.includes('--hd');
@@ -17,6 +18,14 @@ const packageFile = path.join(cli, 'package.json');
 if (!cli || !fs.existsSync(packageFile)) throw new Error('Set WEBOS_CLI_DIR to the installed @webos-tools/cli directory');
 for (const name of ['videodec.js', 'videodec.wasm', 'videodec_simd.js', 'videodec_simd.wasm']) {
   if (!fs.existsSync(path.join(root, 'app/vendor/decoder', name))) throw new Error('Run python tools/vendor-decoder.py before building');
+}
+const decoderRoot = path.join(root, 'app/vendor/decoder');
+const provenance = JSON.parse(fs.readFileSync(path.join(decoderRoot, 'build-manifest.json'), 'utf8'));
+const dependencies = JSON.parse(fs.readFileSync(path.join(root, 'decoder/dependencies.json'), 'utf8'));
+const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+if (provenance.adapter_sha256 !== sha256(path.join(root, 'decoder/viewer_decoder.c')) || provenance.builder_sha256 !== sha256(path.join(root, 'tools/build-decoder.py')) || provenance.ffmpeg.sha256 !== dependencies.ffmpeg.sha256) throw new Error('Decoder source provenance mismatch; rebuild the decoder');
+for (const [variant, name] of [['scalar', 'videodec'], ['simd', 'videodec_simd']]) {
+  if (provenance.variants[variant].wasm_sha256 !== sha256(path.join(decoderRoot, name + '.wasm')) || provenance.variants[variant].loader_sha256 !== sha256(path.join(decoderRoot, name + '.js'))) throw new Error('Decoder artifact checksum mismatch');
 }
 const tools = JSON.parse(fs.readFileSync(packageFile, 'utf8'));
 const entry = path.resolve(cli, tools.bin['ares-package']);

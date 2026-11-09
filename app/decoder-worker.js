@@ -1,5 +1,5 @@
 'use strict';
-let decoder, module, width=0, height=0, timestamp=0;
+let module, width=0, height=0, timestamp=0;
 let serial=Promise.resolve();
 async function initialize(codec) {
   let simd=false;
@@ -11,24 +11,33 @@ async function initialize(codec) {
     request.onload=()=>request.response?resolve(request.response):reject(new Error('Декодер не загружен'));request.onerror=()=>reject(new Error('Декодер не загружен'));request.send();
   });
   module=await self.createVideoDecoder({wasmBinary:bytes,print:()=>{},printErr:()=>{}});
-  decoder=new module.VideoDecoder({
-    videoInfo(w,h){width=w;height=h;postMessage({type:'metadata',width,height,codec});},
-    yuvData(array,pts){
-      const size=width*height, chroma=Math.ceil(width/2)*Math.ceil(height/2), data=new Uint8Array(size+chroma*2), pointers=array>>2;
-      data.set(module.HEAPU8.subarray(module.HEAPU32[pointers],module.HEAPU32[pointers]+size));
-      data.set(module.HEAPU8.subarray(module.HEAPU32[pointers+1],module.HEAPU32[pointers+1]+chroma),size);
-      data.set(module.HEAPU8.subarray(module.HEAPU32[pointers+2],module.HEAPU32[pointers+2]+chroma),size+chroma);
-      postMessage({type:'frame',width,height,data,pts},[data.buffer]);
-    },
-    errorInfo(message){postMessage({type:'error',message:'Ошибка программного декодера: '+message});}
-  });
-  decoder.setCodec(codec==='h265'?'hevc':'avc','annexb','');
+  module.onFrame=(w,h,y,ys,u,us,v,vs,pts)=>{
+    if(w!==width||h!==height){width=w;height=h;postMessage({type:'metadata',width,height,codec});}
+    const size=width*height,cw=Math.ceil(width/2),ch=Math.ceil(height/2),chroma=cw*ch,data=new Uint8Array(size+chroma*2);
+    for(const [pointer,stride,rows,columns,offset] of [[y,ys,height,width,0],[u,us,ch,cw,size],[v,vs,ch,cw,size+chroma]]){
+      for(let row=0;row<rows;row++)data.set(module.HEAPU8.subarray(pointer+row*stride,pointer+row*stride+columns),offset+row*columns);
+    }
+    postMessage({type:'frame',width,height,data,pts},[data.buffer]);
+  };
+  if(module._viewer_create(codec==='h265'?265:264)<0)throw new Error(module.UTF8ToString(module._viewer_error()));
   postMessage({type:'ready'});
 }
 self.onmessage=event=>{
   const message=event.data;
   serial=serial.then(async()=>{
     if(message.type==='init') await initialize(message.codec);
-    else if(message.type==='packet') { decoder.decode(message.data,message.key?1:0,timestamp++);postMessage({type:'ack'}); }
+    else if(message.type==='packet') {
+      if(!module)throw new Error('Декодер не инициализирован');
+      const pointer=module._malloc(message.data.length);
+      if(!pointer)throw new Error('Недостаточно памяти для видеокадра');
+      try{
+        module.HEAPU8.set(message.data,pointer);
+        if(module._viewer_decode(pointer,message.data.length,message.key?1:0,timestamp++)<0)throw new Error(module.UTF8ToString(module._viewer_error()));
+      }finally{module._free(pointer);}
+      postMessage({type:'ack'});
+    }else if(message.type==='flush'){
+      if(module&&module._viewer_flush()<0)throw new Error(module.UTF8ToString(module._viewer_error()));
+      postMessage({type:'flushed'});
+    }
   }).catch(error=>postMessage({type:'error',message:error.message||'Программный декодер недоступен'}));
 };

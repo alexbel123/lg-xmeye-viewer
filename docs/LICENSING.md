@@ -1,17 +1,46 @@
 # Licensing and distribution scope
 
-Project-authored source is licensed under **GNU GPL version 3 only** (`GPL-3.0-only`); see [LICENSE](../LICENSE). Copyright 2026 LG XMEye Viewer contributors. You may use, modify and sell the covered software while complying with the GPL. Recipients retain the rights granted by that license. Third-party notices and licenses must be preserved.
+Project-authored source, including `decoder/viewer_decoder.c`, is licensed under
+**GNU GPL version 3 only** (`GPL-3.0-only`); see [LICENSE](../LICENSE). Copyright
+2026 LG XMEye Viewer contributors. Commercial use is allowed subject to the
+license; recipients retain their GPL rights. Preserve third-party notices.
 
-## Initial public release: source only
+## Version 0.3.3 and later
 
-The repository and source release do not distribute Jessibuca JavaScript loaders, WebAssembly binaries, its npm tarball, third-party static libraries, FFmpeg executables or IPK packages. Local setup fetches Jessibuca 4.0.0 from its original npm URL and verifies a pinned checksum before restoring runtime files. Those files remain Git-ignored. The upstream GPL text is retained in `app/vendor/decoder/COPYING`.
+The WebAssembly decoder is compiled from the pinned FFmpeg 8.1.3 sources and
+our C adapter. The former Jessibuca runtime and its unidentified static
+dependencies are no longer used. FFmpeg is configured with GPL, nonfree and
+version3-only optional code disabled, without external library autodetection.
+The used libavcodec/libavutil code is LGPL-2.1-or-later; see
+[its license](../decoder/COPYING.FFMPEG.LGPLv2.1).
 
-The npm metadata labels Jessibuca as MIT, but the actual package's LICENSE is GPLv3. We follow the actual included license. Its archive contains decoder source/build scripts and prebuilt third-party libraries; complete corresponding source and reproducible builds for those libraries have not been verified. Copying the tarball alone has not been established to satisfy all source obligations for binary distribution. Public binary releases are deferred until that work is completed.
+The Emscripten-generated runtime and toolchain standard libraries retain their
+upstream licenses. Notices are supplied in `decoder/COPYING.EMSCRIPTEN` and
+`decoder/COPYING.MUSL`, copied into the installed decoder bundle. Complete
+Emscripten source, including runtime and standard-library sources, is bundled
+with the release sources. Official compiler binaries are downloaded by the
+pinned SDK; this project does not rebuild LLVM itself.
 
-Local setup replaces `export default Module;` with `self.createVideoDecoder = Module;` in the generated loaders; the WASM files are unchanged. See [dependency details](../tools/vendor-sources/README.md) and [notices](../THIRD_PARTY_NOTICES.txt).
+Each binary release is accompanied on the same GitHub release page by
+`lg-xmeye-viewer-VERSION-source.zip`. It includes the project source, adapter,
+build scripts, lockfiles, original unmodified FFmpeg/Emscripten source archives
+and the SDK installer source. Bundled archives live under `third_party/` and
+their hashes are recorded in `decoder/dependencies.json`. Build options and
+artifact provenance are in `app/vendor/decoder/build-manifest.json`.
 
-## Before distributing a binary
+See [rebuild instructions](../decoder/README.md) and
+[third-party notices](../THIRD_PARTY_NOTICES.txt). The source delivery resolves
+the previously unverified decoder-source composition; codec patent rights and
+LG store approval remain separate questions for distribution/monetization.
 
-Verify the exact decoder/dependency sources, license notices, build scripts and corresponding-source delivery requirements for the binaries you distribute. Also check applicable codec patent licensing and store terms for your distribution territories. A source license alone does not settle patent rights or grant rights to third-party trademarks.
+## Historical 0.3.2 release
 
-The project does not include the XMEye mobile application, proprietary cloud SDK or vendor credentials. Protocol references are attributed in the notices and `protocol-sources.json`. Development FFmpeg is a test dependency only. Synthetic video fixtures are generated with the supplied FFmpeg test-pattern script; prototype camera images are generated illustrations rather than real CCTV.
+Version 0.3.2 was source-only. Its optional upstream Jessibuca download contained
+precompiled libraries whose complete corresponding source had not been
+verified. No IPK/decoder binary was distributed in that historical release.
+
+The project does not include the XMEye mobile application, proprietary cloud
+SDK or vendor credentials. Protocol references are attributed in the notices.
+The native FFmpeg executable is a development test dependency and is not
+included in the TV application. Repository videos are generated test patterns;
+prototype images are generated illustrations, not private CCTV footage.

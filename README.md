@@ -4,13 +4,13 @@
 
 [![Checks](https://github.com/alexbel123/lg-xmeye-viewer/actions/workflows/checks.yml/badge.svg)](https://github.com/alexbel123/lg-xmeye-viewer/actions/workflows/checks.yml)
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
-[![Source preview: 0.3.2](https://img.shields.io/badge/source_preview-0.3.2-orange.svg)](https://github.com/alexbel123/lg-xmeye-viewer/releases)
+[![Source preview: 0.3.3](https://img.shields.io/badge/source_preview-0.3.3-orange.svg)](https://github.com/alexbel123/lg-xmeye-viewer/releases)
 
 [English](README.en.md) · [Установка](docs/INSTALL.ru.md) · [Совместимость](docs/COMPATIBILITY.md) · [Конфиденциальность](docs/PRIVACY.md) · [Сообщить об ошибке](https://github.com/alexbel123/lg-xmeye-viewer/issues/new/choose)
 
 Независимый открытый клиент для XMEye-совместимых DVR/NVR. Интерфейс и сервис работают на телевизоре; постоянно включённый компьютер для просмотра не нужен. Приложение подключается по IP и использует учётную запись самого регистратора. Облачный аккаунт XMEye не требуется и не поддерживается.
 
-**Статус: ранняя версия с открытыми исходниками.** Это публикация на GitHub; одобрения LG Content Store пока нет. В первом публичном выпуске доступны исходники и инструкция самостоятельной сборки. Готовые IPK и бинарные декодеры не распространяются до проверки полноты их соответствующих исходников. Работа обычной установки Developer Mode без root ещё не подтверждена — см. [ограничения](docs/COMPATIBILITY.md).
+**Статус: экспериментальная версия для разработчиков.** В [выпуске v0.3.3](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.3.3) доступны готовые IPK HD/FHD, декодер, полные исходники и контрольные суммы. Декодер собран нами из зафиксированных исходников FFmpeg. Одобрения LG Content Store пока нет. Работа обычной установки Developer Mode без root ещё не подтверждена — см. [ограничения](docs/COMPATIBILITY.md).
 
 ## Что уже работает
 
@@ -73,6 +73,8 @@ npm run check:publication
 Пароли, их служебные хеши, IP/MAC-адреса домашних устройств, локальные журналы и личные видеозаписи в репозиторий не входят. Первый запуск начинается с пустого списка устройств. Сохранённые данные входа шифруются сервисом отдельно для каждого профиля; хеш пароля также считается секретом. [Какие данные хранятся и где](docs/PRIVACY.md).
 
 Историческая проверка версии 0.3.1 на LG OLED65C2RLA: четыре HEVC-потока 800×448 одновременно в течение 45 секунд и шесть переключений без потери подключения. Это ограниченная проверка на конкретном оборудовании. Она не доказывает круглосуточную стабильность или совместимость со всеми LG. [Обезличенные результаты](verification.json), [текущие автоматические проверки](https://github.com/alexbel123/lg-xmeye-viewer/actions).
+
+Самостоятельная пересборка декодера: `python tools/build-decoder.py` (Linux/WSL, Python 3.12+ и build-essential). [Исходники, версии и команды](decoder/README.md). Пиксельные проверки: `npm run test:decoder`.
 
 ## Лицензия и участие
 

@@ -27,7 +27,7 @@ class ViewerManager {
       this.server.listen(0, '127.0.0.1', () => { this.port = this.server.address().port; resolve(); });
     });
     await this.opening;
-    return { version: '0.3.2', native: true, maxStreams: 4, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list() };
+    return { version: '0.3.3', native: true, maxStreams: 4, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list() };
   }
 
   async credentialsInfo({ id } = {}) {

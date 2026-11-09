@@ -20,7 +20,7 @@
     return {draw,close(){textures.forEach(texture=>gl.deleteTexture(texture));gl.deleteBuffer(buffer);gl.deleteProgram(program);const extension=gl.getExtension('WEBGL_lose_context');if(extension)extension.loseContext();}};
   }
   class LocalSoftwarePlayer {
-    constructor(canvas,callbacks){this.canvas=canvas;this.callbacks=callbacks;this.generation=0;this.controller=null;this.worker=null;this.pending=0;this.frames=0;this.draw=null;}
+    constructor(canvas,callbacks){this.canvas=canvas;this.callbacks=callbacks;this.generation=0;this.controller=null;this.worker=null;this.pending=0;this.frames=0;this.draw=null;this.flushResolve=null;}
     async start(url){
       this.stop();const generation=++this.generation;this.controller=new AbortController();this.callbacks.state('loading');
       const fail=error=>{if(generation!==this.generation)return;this.stop();this.callbacks.error(error.message||String(error));};
@@ -42,6 +42,7 @@
                   if(frame.type==='ready')resolve();
                   else if(frame.type==='metadata')this.callbacks.metadata(frame);
                   else if(frame.type==='ack')this.pending=Math.max(0,this.pending-1);
+                  else if(frame.type==='flushed'){if(this.flushResolve)this.flushResolve();this.flushResolve=null;}
                   else if(frame.type==='error'){const error=new Error(frame.message);reject(error);fail(error);}
                   else if(frame.type==='frame'){this.draw.draw(frame);this.canvas.dataset.frames=String(++this.frames);this.callbacks.state('playing');}
                 };
@@ -51,13 +52,17 @@
               while(this.pending>=3&&generation===this.generation)await new Promise(resolve=>setTimeout(resolve,8));
               if(generation!==this.generation)return;const bytes=data.slice(1);this.pending++;this.worker.postMessage({type:'packet',key:!!data[0],data:bytes},[bytes.buffer]);
             } else if(kind===3)throw new Error(new TextDecoder().decode(data));
-            else if(kind===4){ended=true;this.callbacks.state('ended');}
+            else if(kind===4){
+              if(this.worker)await new Promise(resolve=>{this.flushResolve=resolve;this.worker.postMessage({type:'flush'});});
+              if(generation!==this.generation)return;
+              ended=true;this.callbacks.state('ended');
+            }
           }
         }
         if(!ended&&generation===this.generation)throw new Error('Видеопоток прерван');
       } catch(error){if(error.name!=='AbortError')fail(error);}
     }
-    stop(){this.generation++;if(this.controller)this.controller.abort();if(this.worker)this.worker.terminate();this.controller=null;this.worker=null;this.pending=0;this.frames=0;this.canvas.dataset.frames='0';}
+    stop(){this.generation++;if(this.controller)this.controller.abort();if(this.worker)this.worker.terminate();if(this.flushResolve)this.flushResolve();this.flushResolve=null;this.controller=null;this.worker=null;this.pending=0;this.frames=0;this.canvas.dataset.frames='0';}
     dispose(){this.stop();if(this.draw)this.draw.close();this.draw=null;}
   }
   window.LocalSoftwarePlayer=LocalSoftwarePlayer;
