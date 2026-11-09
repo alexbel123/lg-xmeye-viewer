@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { DvripClient, passwordHash } = require('./dvrip.cjs');
 const { MediaParser, FragmentedMP4 } = require('./media.cjs');
 const { CredentialStore } = require('./credentials.cjs');
+const { SettingsStore } = require('./settings.cjs');
 const MAX_STREAMS = 6;
 
 function message(kind, payload) {
@@ -15,10 +16,11 @@ function message(kind, payload) {
 class ViewerManager {
   constructor(options = {}) {
     this.credentials = options.credentialStore || new CredentialStore(options.credentialsDirectory);
+    this.settings = new SettingsStore(this.credentials.directory);
     this.devices = new Map(); this.tokens = new Map(); this.server = null;
     this.connecting = new Map();
     this.port = null; this.streams = new Map(); this.opening = null;
-    this.methods = ['bootstrap', 'connect', 'disconnect', 'status', 'live', 'archive', 'playback', 'stop', 'credentialsInfo', 'saveCredentials', 'forgetCredentials'];
+    this.methods = ['bootstrap', 'connect', 'disconnect', 'status', 'live', 'archive', 'playback', 'stop', 'credentialsInfo', 'saveCredentials', 'forgetCredentials', 'saveSettings'];
   }
 
   async bootstrap() {
@@ -28,8 +30,10 @@ class ViewerManager {
       this.server.listen(0, '127.0.0.1', () => { this.port = this.server.address().port; resolve(); });
     });
     await this.opening;
-    return { version: '0.3.4', native: true, maxStreams: MAX_STREAMS, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list() };
+    return { version: '0.4.0', native: true, maxStreams: MAX_STREAMS, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list(), settings: await this.settings.get() };
   }
+
+  async saveSettings(parameters) { await this.settings.set(parameters); return { saved:true }; }
 
   async credentialsInfo({ id } = {}) {
     const credentials = await this.credentials.list();

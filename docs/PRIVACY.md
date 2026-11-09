@@ -4,7 +4,7 @@ The source release contains no configured recorders, real passwords/hashes, priv
 
 ## Runtime data
 
-- TV/browser localStorage stores profile ID, display name, host, port, channel count and favorites. These are user data and should not be included in screenshots or reports.
+- TV/browser localStorage stores profile ID, display name, host, port, channel count, favorites, named camera sets/order and display preferences. The service also keeps a restricted-permission `workspace.json` snapshot in its private data directory, so settings can recover after webOS clears browser data during an update. This snapshot contains no login credentials; profile addresses and set names are not encrypted. These are user data and should not be included in screenshots or reports.
 - The service stores username and the Sofia password hash per profile in an AES-256-GCM encrypted vault. The hash is an authentication secret even though it is not the original password.
 - The key is stored locally with restricted file permissions; Windows additionally uses CurrentUser DPAPI. Local encryption does not protect against an administrator/root user with access to the running TV or computer.
 - TV default: `/media/internal/local.xmeye.viewer/`. Windows preview: `%LOCALAPPDATA%/LGXMEyeViewer/`. Other local runtimes: the OS temporary directory's `lg-xmeye-viewer` subdirectory. `VIEWER_CREDENTIALS_DIR` can select an isolated development directory. Standard TV sandbox storage support remains unverified.

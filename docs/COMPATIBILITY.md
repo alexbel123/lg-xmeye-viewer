@@ -3,7 +3,7 @@
 | Area | Current evidence and limits |
 | --- | --- |
 | Target | LG webOS 22+; not a guarantee for every TV or firmware |
-| Physical TV | v0.3.1 live/multiview tested on LG OLED65C2RLA; service/runtime checks on OLED65B3RLA |
+| Physical TV | v0.4.0 six-camera live/workspace tested on LG OLED65C2RLA; service/runtime checks on OLED65B3RLA |
 | Installation | Hardware installation used root access; ordinary Developer Mode/store sandbox not validated |
 | Networking | Direct IPv4/DVRIP TCP, usually port 34567; routed subnets supported in principle; no cloud/P2P/serial login |
 | DVR/NVR | XMEye-compatible protocol; protocol/firmware variants may differ; not every branded recorder is supported |
@@ -14,7 +14,7 @@
 | Controls | Arrow keys, OK, Back, pointer, CH+/CH−; UI currently Russian |
 | Layout | HD/FHD logical canvas; browser layout tests do not prove every physical panel or accessibility use case |
 | Missing | Audio, PTZ, cloud login, pause/export, multi-recorder grids |
-| v0.4 concept | Layouts 1/2/4/6, named sets and enlarged grid tile are shown in a separate synthetic prototype; not all shipped |
+| Workspace | Production layouts 1/2/4/6, per-recorder named sets/order, pagination and enlarged grid tile; switching layouts preserves selected cameras |
 
 Historical C2 test: four HEVC 800×448 channels at approximately 15/15/15/20 fps for 45 seconds, six hot switches. This is not an endurance benchmark. See [verification.json](../verification.json), which describes the **0.3.1 baseline**, not a new 0.3.4 physical-TV test.
 
@@ -24,4 +24,4 @@ Useful official references: [LG JS services](https://webostv.developer.lge.com/d
 
 Version 0.3.3 uses a rebuilt FFmpeg decoder. Scalar/SIMD pixel accuracy and synthetic browser multiview are checked locally; its physical-TV throughput has not yet been measured. The 0.3.1 TV benchmark used the previous decoder and must not be treated as a 0.3.3 performance claim.
 
-Version 0.3.4 raises the actual application/service limit to six cameras, with a 3×2 layout for five/six tiles. Local synthetic H.264/H.265 checks verify six advancing streams, seventh-camera rejection, remote replacement and peer preservation. Six-camera physical-TV throughput has not been measured.
+Version 0.3.4 raised the application/service limit to six cameras. Version 0.4.0 integrates the workspace UI and was sampled on a physical C2 for 45 seconds with six HEVC 800×448 streams at 15/15/15/20/20/15 fps, without WebGL errors or lost contexts. Layouts 1/2/4/6, seven hot switches, fullscreen and settings recovery were checked. Later network interruptions/reinstalls were followed by a DVRIP login timeout despite a successful TCP connection; its cause remains unresolved. See [v0.4.0 evidence](../verification-v0.4.0.json). This is not an endurance or reconnect-reliability certification.

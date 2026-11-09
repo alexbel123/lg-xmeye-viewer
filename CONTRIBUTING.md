@@ -13,7 +13,7 @@ npm run check:publication
 
 `check:publication` checks Git-tracked files; stage intended new files before running it. CI separately runs Gitleaks against the Git history. Test fixtures are generated patterns, not recordings. To regenerate them: `node tools/generate-fixtures.cjs`. Preview: `npm start`. Fake recorder: `node test/fixture-recorder.cjs`.
 
-For UI changes, test empty first run, remote focus/OK/Back, HD/FHD layouts and synthetic video. The `tools/ui-*.cjs` files are Playwright CLI `run-code` scenarios for a separate loopback-only test session; never run them in a user's real configured session. `tools/ui-verify-multiview.cjs` uses an isolated preview on port 19438.
+For UI changes, test empty first run, remote focus/OK/Back, HD/FHD layouts and synthetic video. The `tools/ui-*.cjs` files are Playwright CLI `run-code` scenarios for a separate loopback-only test session; never run them in a user's real configured session. `tools/ui-verify-workspace.cjs` exercises the v0.4 workspace using isolated previews on ports 19458/19461 and 12-channel synthetic H.264/H.265 recorders on 19459/19460. Older `ui-*.cjs` scenarios target the historical v0.3 shell. Do not run them against v0.4 without adapting their selectors.
 
 Do not commit actual DVR/TV profiles, credential stores, hashes, media tokens, keys, personal device addresses, real recordings or local logs. Use loopback for test services and RFC 5737 documentation addresses in examples. Do not add generated service copies, decoder binaries or IPK files to Git; see [licensing](docs/LICENSING.md).
 

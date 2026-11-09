@@ -33,7 +33,7 @@ fs.mkdirSync(path.join(root, 'service/lib'), { recursive: true });
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
 fs.copyFileSync(path.join(root, 'THIRD_PARTY_NOTICES.txt'), path.join(root, 'app/THIRD_PARTY_NOTICES.txt'));
 fs.copyFileSync(path.join(root, 'LICENSE'), path.join(root, 'app/LICENSE'));
-for (const file of ['dvrip.cjs', 'media.cjs', 'manager.cjs', 'credentials.cjs']) fs.copyFileSync(path.join(root, 'src', file), path.join(root, 'service/lib', file));
+for (const file of ['dvrip.cjs', 'media.cjs', 'manager.cjs', 'credentials.cjs', 'settings.cjs']) fs.copyFileSync(path.join(root, 'src', file), path.join(root, 'service/lib', file));
 let appDirectory = path.join(root, 'app');
 const outputDirectory = hd ? path.join(root, 'output/package-hd') : path.join(root, 'dist');
 if (hd) {

@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-09",
+  "version": "0.4.0",
+  "unit_and_integration_tests": { "passed": 28, "failed": 0 },
+  "packaged_browser_ui": {
+    "source": "JavaScript extracted from the FHD IPK",
+    "six_advancing_cameras": ["h264", "h265"],
+    "layouts": [1, 2, 4, 6],
+    "named_sets_reload_order_pagination": "passed",
+    "separate_recorder_workspaces_and_saved_logins": "passed",
+    "recovery_after_browser_storage_reset": "passed",
+    "main_stream_and_synthetic_archive": "passed",
+    "fullscreen_canvas_reuse_and_hidden_panels": "passed",
+    "rapid_layout_changes": "passed",
+    "viewports": ["960x540", "1280x720", "1366x768", "1920x1080"],
+    "uncaught_browser_errors": 0
+  },
+  "physical_tv": {
+    "model": "OLED65C2RLA",
+    "installation": "rooted developer television; ordinary Developer Mode not validated",
+    "six_camera_sample": {
+      "seconds": 45,
+      "codec": "h265",
+      "resolution_per_camera": "800x448",
+      "frames_per_second": [15, 15, 15, 20, 20, 15],
+      "all_advanced": true,
+      "webgl_errors": 0,
+      "lost_contexts": 0
+    },
+    "layouts_and_matching_service_stream_counts": [1, 2, 4, 6],
+    "hot_camera_switches": 7,
+    "fullscreen_reused_existing_canvas": true,
+    "fullscreen_and_hidden_panels_geometry": "1920x1080",
+    "menu_and_back_handlers": "passed via injected remote key events",
+    "named_set_selection": [1, 3, 5, 7],
+    "profile_fingerprint_after_reinstall": "unchanged",
+    "named_test_set_after_reinstall": "retained",
+    "temporary_test_set_cleanup": "removed; concurrent user set edits preserved",
+    "follow_up": "After later network interruptions and reinstalls, TCP to the recorder succeeded but DVRIP login timed out. The owner confirmed that the phone app also could not connect. A PC probe relayed through the local TV received RTSP 200 OK; direct PC routing was affected by VPN filtering. Cause of the DVRIP login timeout is unresolved; reconnect reliability is not certified."
+  },
+  "limits": "A 45-second sample and targeted interactions do not establish endurance, universal recorder support or LG store readiness. No private addresses, credentials or CCTV images are included."
+}

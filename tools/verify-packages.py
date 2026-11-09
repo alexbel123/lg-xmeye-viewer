@@ -33,9 +33,13 @@ for suffix, resolution in [('all', '1920x1080'), ('1280x720', '1280x720')]:
         manifest = json.loads(read_tail('local.xmeye.viewer/appinfo.json').decode('utf-8-sig'))
         assert manifest['version'] == version and manifest['resolution'] == resolution
         assert read_tail('local.xmeye.viewer.service/lib/credentials.cjs') == (root / 'src/credentials.cjs').read_bytes()
+        assert read_tail('local.xmeye.viewer.service/lib/settings.cjs') == (root / 'src/settings.cjs').read_bytes()
         assert read_tail('local.xmeye.viewer/styles.css') == (root / 'app/styles.css').read_bytes()
         # ares-package minifies JavaScript. Execute that exact output in the browser QA.
-        assert b'#device-list,#channels' in read_tail('local.xmeye.viewer/app.js')
+        assert b'WorkspaceStore' in read_tail('local.xmeye.viewer/app.js')
+        for script in ['workspace-store.js', 'workspace-icons.js', 'recorder-api.js', 'live-grid.js']:
+            assert script.encode() in read_tail('local.xmeye.viewer/index.html')
+            assert read_tail('local.xmeye.viewer/' + script)
         if suffix == 'all':
             extracted = root / 'output' / 'packaged-app'
             extracted.mkdir(parents=True, exist_ok=True)

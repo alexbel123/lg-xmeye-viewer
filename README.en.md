@@ -6,13 +6,15 @@
 
 The TV application and its JavaScript service connect directly to an XMEye-compatible DVR/NVR by IP, using the recorder's own account. An always-on computer and an XMEye cloud account are not required. Cloud/P2P login by serial number is not implemented.
 
-**Experimental developer preview, version 0.3.4.** [The release](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.3.4) includes HD/FHD IPK packages, a source-built decoder bundle, full corresponding sources and checksums. The decoder is built from pinned FFmpeg sources. This project has not been approved for LG Content Store. Ordinary non-root Developer Mode operation has not yet been validated. Read compatibility notes before installation.
+**Experimental developer preview, version 0.4.0.** [The release](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.4.0) includes HD/FHD IPK packages, a source-built decoder bundle, full corresponding sources and checksums. The decoder is built from pinned FFmpeg sources. This project has not been approved for LG Content Store. Ordinary non-root Developer Mode operation has not yet been validated. Read compatibility notes before installation.
 
 ## Features
 
 - Separate recorder profiles and encrypted saved credentials per device.
 - Live channel list, main/substream selection and hot camera switching.
 - Up to **six** live cameras from one recorder, with independent media connections.
+- Selectable **1 / 2 / 4 / 6** layouts, named camera sets and camera ordering.
+- Click a tile to enlarge it; Back returns to the grid.
 - Fullscreen camera field with hidden controls and remote navigation.
 - H.264/H.265 playback using MediaSource or a local WebAssembly/WebGL decoder.
 - Recording search/playback, verified against synthetic recordings.
@@ -26,19 +28,17 @@ Working application with **synthetic test patterns**, never private CCTV footage
 
 ![Working six-camera grid with synthetic video](docs/images/live-grid.png)
 
-Separate v0.4 **UI concept**, with generated images. The working player supports up to six streams with an automatic 3×2 grid. Named sets and manual layout selection remain prototype features:
-
-![Future UI concept with named camera sets and generated imagery](docs/images/interface-concept.png)
-
-Open `design/prototype-v0.4/index.html` for the interactive concept. It makes no connections to recorders.
+The v0.4 sidebar, layout picker, named sets and enlarged-camera view now control the real player. The original [interactive prototype](design/prototype-v0.4/README.md) remains as design history; its generated camera photographs are not included in the installed application.
 
 ## Get started
 
-Follow [installation](docs/INSTALL.en.md) and [compatibility](docs/COMPATIBILITY.md). The first run contains no configured devices. Add your recorder's address, port and viewing account, then select a channel or the camera grid. Grid mode uses the Extra1 substream.
+Follow [installation](docs/INSTALL.en.md) and [compatibility](docs/COMPATIBILITY.md). The first run contains no configured devices. Add your recorder's address, port and viewing account, then use the initial six-camera view, choose a 1/2/4/6 layout or create named camera sets. Grid mode uses the Extra1 substream.
 
 The TV needs a routed network connection to the recorder. Separate subnets work only when routing and access rules permit the connection. XMEye cloud connectivity on a phone does not establish this local route.
 
 ## Development
+
+Version 0.4.0 hardware checks on an OLED65C2RLA covered six HEVC 800×448 streams for 45 seconds (15–20 fps), layouts 1/2/4/6, seven hot switches and fullscreen. Later network interruptions/reinstalls were followed by a recorder login timeout; its cause remains unresolved. See [v0.4.0 evidence and limits](verification-v0.4.0.json).
 
 Requirements: Git, Node.js 18+, Python 3.10+; FFmpeg for media tests.
 
