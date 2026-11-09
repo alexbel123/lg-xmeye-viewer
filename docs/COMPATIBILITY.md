@@ -15,6 +15,7 @@
 | Layout | HD/FHD logical canvas; browser layout tests do not prove every physical panel or accessibility use case |
 | Missing | Audio, PTZ, cloud login, pause/export, multi-recorder grids |
 | Workspace | Production layouts 1/2/4/6, per-recorder named sets/order, pagination and enlarged grid tile; switching layouts preserves selected cameras |
+| Automatic set sizing | Creating/editing a set fits its grid to selected cameras: 1→1, 2→2, 3–4→4, 5–6→6; larger sets use pages of six. Cancelling preserves the previous viewing layout |
 
 Historical C2 test: four HEVC 800×448 channels at approximately 15/15/15/20 fps for 45 seconds, six hot switches. This is not an endurance benchmark. See [verification.json](../verification.json), which describes the **0.3.1 baseline**, not a new 0.3.4 physical-TV test.
 
@@ -25,3 +26,5 @@ Useful official references: [LG JS services](https://webostv.developer.lge.com/d
 Version 0.3.3 uses a rebuilt FFmpeg decoder. Scalar/SIMD pixel accuracy and synthetic browser multiview are checked locally; its physical-TV throughput has not yet been measured. The 0.3.1 TV benchmark used the previous decoder and must not be treated as a 0.3.3 performance claim.
 
 Version 0.3.4 raised the application/service limit to six cameras. Version 0.4.0 integrates the workspace UI and was sampled on a physical C2 for 45 seconds with six HEVC 800×448 streams at 15/15/15/20/20/15 fps, without WebGL errors or lost contexts. Layouts 1/2/4/6, seven hot switches, fullscreen and settings recovery were checked. Later network interruptions/reinstalls were followed by a DVRIP login timeout despite a successful TCP connection; its cause remains unresolved. See [v0.4.0 evidence](../verification-v0.4.0.json). This is not an endurance or reconnect-reliability certification.
+
+Version 0.4.1 automatic sizing was checked in the editor on the physical C2 while selecting 1–6 cameras and removing them again. Saved profiles, sets and credentials remained unchanged after the update and cancelled preview. This patch has no new endurance benchmark; see [v0.4.1 evidence](../verification-v0.4.1.json).

@@ -27,12 +27,12 @@ async page=>{
   const makeSet=async(name,ids,layout=4)=>{
     await click('.rail-button[data-action="sets"]');await click('[data-action="new-set"]');await page.locator('#set-name').fill(name);
     for(const id of ids)await click('#camera-picker [data-camera="'+id+'"]');
-    await click('#editor-layout-options [data-count="'+layout+'"]');await click('[data-action="save-set"]');await playing(Math.min(ids.length,layout));
+    check(await page.locator('#editor-layout-preview').getAttribute('data-layout')===String(layout),'Automatic editor layout');await click('[data-action="save-set"]');await playing(Math.min(ids.length,layout));
   };
   await makeSet('Вход · 1357',[1,3,5,7]);check(JSON.stringify(await selected())==='[1,3,5,7]','First named set');
   await makeSet('Двор · 3589',[3,5,8,9]);check(JSON.stringify(await selected())==='[3,5,8,9]','Second named set');
   await page.reload();await playing(4);check(await page.locator('#view-title').textContent()==='Двор · 3589','Named set did not survive reload');
-  await click('[data-action="edit-current"]');await click('[data-action="move-up"][data-camera="8"]');await page.locator('#set-name').fill('Двор');await click('[data-action="save-set"]');await playing(4);check(JSON.stringify(await selected())==='[3,8,5,9]','Camera ordering');
+  await click('.top-actions [data-action="edit-current"]');await click('[data-action="move-up"][data-camera="8"]');await page.locator('#set-name').fill('Двор');await click('[data-action="save-set"]');await playing(4);check(JSON.stringify(await selected())==='[3,8,5,9]','Camera ordering');
   await makeSet('Все каналы',[1,2,3,4,5,6,7,8,9],6);await click('[data-action="next-page"]');await playing(3);check(JSON.stringify(await selected())==='[7,8,9]','Second page');
   await click('[data-action="previous-page"]');await playing(6);
   await click('[data-action="clean"]');check(await page.evaluate(()=>{const r=document.querySelector('#camera-wall').getBoundingClientRect();return r.x===0&&r.y===0&&r.width===innerWidth&&r.height===innerHeight;}),'Clean grid does not fill screen');
@@ -44,7 +44,7 @@ async page=>{
   await page.keyboard.press('ContextMenu');await click('[data-action="archive"]');await page.locator('#archive-date').fill('2026-11-04');await page.locator('#archive-form button[type="submit"]').click();await click('.recording-row');await page.waitForFunction(()=>document.querySelector('#detail-video').videoWidth>0,{},{timeout:30000});await page.keyboard.press('Escape');await playing(6);
   const layouts=[];
   for(const [width,height]of[[960,540],[1280,720],[1366,768],[1920,1080]]){
-    await page.setViewportSize({width,height});await click('[data-action="edit-current"]');
+    await page.setViewportSize({width,height});await click('.top-actions [data-action="edit-current"]');
     const geometry=await page.locator('.editor').evaluate(node=>{const r=node.getBoundingClientRect(),save=node.querySelector('[data-action="save-set"]').getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,saveBottom:save.bottom,width:innerWidth,height:innerHeight};});
     check(geometry.x>=0&&geometry.y>=0&&geometry.right<=width+1&&geometry.bottom<=height+1&&geometry.saveBottom<=height,'Editor outside '+width+'x'+height);layouts.push({width,height,editorFits:true});await page.keyboard.press('Escape');
   }

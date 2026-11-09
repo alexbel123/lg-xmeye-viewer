@@ -6,7 +6,7 @@
 
 The TV application and its JavaScript service connect directly to an XMEye-compatible DVR/NVR by IP, using the recorder's own account. An always-on computer and an XMEye cloud account are not required. Cloud/P2P login by serial number is not implemented.
 
-**Experimental developer preview, version 0.4.0.** [The release](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.4.0) includes HD/FHD IPK packages, a source-built decoder bundle, full corresponding sources and checksums. The decoder is built from pinned FFmpeg sources. This project has not been approved for LG Content Store. Ordinary non-root Developer Mode operation has not yet been validated. Read compatibility notes before installation.
+**Experimental developer preview, version 0.4.1.** [The release](https://github.com/alexbel123/lg-xmeye-viewer/releases/tag/v0.4.1) includes HD/FHD IPK packages, a source-built decoder bundle, full corresponding sources and checksums. The decoder is built from pinned FFmpeg sources. This project has not been approved for LG Content Store. Ordinary non-root Developer Mode operation has not yet been validated. Read compatibility notes before installation.
 
 ## Features
 
@@ -14,6 +14,7 @@ The TV application and its JavaScript service connect directly to an XMEye-compa
 - Live channel list, main/substream selection and hot camera switching.
 - Up to **six** live cameras from one recorder, with independent media connections.
 - Selectable **1 / 2 / 4 / 6** layouts, named camera sets and camera ordering.
+- Creating/editing a set automatically fits its grid: **1 → 1, 2 → 2, 3–4 → 4, 5–6 → 6**. Larger sets use pages of six.
 - Click a tile to enlarge it; Back returns to the grid.
 - Fullscreen camera field with hidden controls and remote navigation.
 - H.264/H.265 playback using MediaSource or a local WebAssembly/WebGL decoder.
@@ -30,11 +31,17 @@ Working application with **synthetic test patterns**, never private CCTV footage
 
 The v0.4 sidebar, layout picker, named sets and enlarged-camera view now control the real player. The original [interactive prototype](design/prototype-v0.4/README.md) remains as design history; its generated camera photographs are not included in the installed application.
 
+Automatic set sizing: **three selected cameras → four windows**, using only a synthetic fixture.
+
+![Set editor with automatic grid sizing](docs/images/automatic-grid.png)
+
 ## Get started
 
 Follow [installation](docs/INSTALL.en.md) and [compatibility](docs/COMPATIBILITY.md). The first run contains no configured devices. Add your recorder's address, port and viewing account, then use the initial six-camera view, choose a 1/2/4/6 layout or create named camera sets. Grid mode uses the Extra1 substream.
 
 The TV needs a routed network connection to the recorder. Separate subnets work only when routing and access rules permit the connection. XMEye cloud connectivity on a phone does not establish this local route.
+
+Version 0.4.1 automatic sizing was also verified on the physical TV while adding/removing cameras. Saved profiles, sets and credentials survived the update. See [v0.4.1 evidence](verification-v0.4.1.json).
 
 ## Development
 

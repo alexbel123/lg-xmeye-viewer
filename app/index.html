@@ -34,7 +34,7 @@
       <div class="camera-wall" id="camera-wall" aria-label="Сетка камер"></div>
     </main>
     <footer class="statusbar">
-      <div class="live-status"><i></i><span id="online-status">Подключение к сервису</span><span class="viewer-version" id="app-version">0.4.0</span></div>
+      <div class="live-status"><i></i><span id="online-status">Подключение к сервису</span><span class="viewer-version" id="app-version">0.4.1</span></div>
       <div class="remote-legend"><span><kbd>OK</kbd> Открыть камеру</span><span><kbd>Назад</kbd> Вернуться</span></div>
       <div class="pagination" id="pagination"></div>
       <time id="clock"></time>
@@ -61,7 +61,8 @@
       <header class="editor-header"><div><div class="eyebrow">ВАШИ КАМЕРЫ, ВАШ ПОРЯДОК</div><h2 id="editor-title">Редактировать набор</h2></div><button class="square-button" data-action="close-editor" aria-label="Закрыть редактор"><span data-icon="close"></span></button></header>
       <div class="editor-body">
         <div class="editor-main">
-          <div class="name-layout-row"><label class="name-field">Название набора<input id="set-name" maxlength="36" autocomplete="off" placeholder="Например, Периметр"></label><div class="editor-layout"><span class="field-label">Сетка при открытии</span><div class="segments" id="editor-layout-options"></div></div></div>
+          <div class="name-layout-row"><label class="name-field">Название набора<input id="set-name" maxlength="36" autocomplete="off" placeholder="Например, Периметр"></label><div class="editor-layout"><span class="field-label">Сетка набора</span><div class="auto-layout" id="editor-layout-preview" role="status" aria-live="polite" aria-atomic="true"><span class="auto-layout-icon" aria-hidden="true"></span><span><strong id="editor-layout-value">Выберите камеры</strong><small>Автоматически</small></span></div></div></div>
+          <p class="auto-layout-note" id="editor-layout-note">По числу выбранных камер</p>
           <div class="picker-heading"><div><h3>Камеры</h3><p id="editor-device-note"></p></div><button class="text-button" data-action="clear-selection">Снять выделение</button></div>
           <div class="camera-picker" id="camera-picker"></div>
         </div>

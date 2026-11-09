@@ -3,6 +3,7 @@
   const layouts=[1,2,4,6],key='viewer.workspace.v1';
   const ids=values=>[...new Set((Array.isArray(values)?values:[]).filter(value=>Number.isInteger(value)&&value>=1&&value<=256))];
   class WorkspaceStore{
+    static layoutForCount(count){return layouts.find(layout=>count<=layout)||6;}
     constructor(storage){
       this.storage=storage;this.devices=new Map();this.preferences={labels:true,remember:true,activeDevice:null};
       try{
@@ -16,7 +17,7 @@
           for(const item of Array.isArray(entry.sets)?entry.sets:[]){
             if(!item||typeof item.id!=='string'||seen.has(item.id)||typeof item.name!=='string'||!item.name.trim())continue;
             const cameraIds=ids(item.cameraIds);if(!cameraIds.length)continue;
-            sets.push({id:item.id,name:item.name.trim().slice(0,36),cameraIds,layout:layouts.includes(item.layout)?item.layout:6});seen.add(item.id);
+            sets.push({id:item.id,name:item.name.trim().slice(0,36),cameraIds,layout:layouts.includes(item.layout)?item.layout:WorkspaceStore.layoutForCount(cameraIds.length)});seen.add(item.id);
           }
           if(sets.length)this.devices.set(entry.id,{sets,activeId:this.preferences.remember&&sets.some(item=>item.id===entry.activeId)?entry.activeId:sets[0].id});
         }
@@ -28,7 +29,7 @@
         const available=new Set(ids(cameraIds)),preferred=ids(favorites).filter(id=>available.has(id));
         const selected=preferred.length?preferred:ids(cameraIds).slice(0,6);
         if(!selected.length)return null;
-        view={sets:[{id:'default',name:preferred.length?'Избранное':'Основной набор',cameraIds:selected,layout:6}],activeId:'default'};
+        view={sets:[{id:'default',name:preferred.length?'Избранное':'Основной набор',cameraIds:selected,layout:WorkspaceStore.layoutForCount(selected.length)}],activeId:'default'};
         this.devices.set(deviceId,view);
       }
       return view;
@@ -41,8 +42,8 @@
       const view=this.view(deviceId);if(!view)throw new Error('Подключите регистратор');
       const name=String(draft.name||'').trim(),cameraIds=ids(draft.cameraIds);
       if(!name)throw new Error('Введите название набора');if(name.length>36)throw new Error('Название не длиннее 36 символов');
-      if(!cameraIds.length)throw new Error('Выберите хотя бы одну камеру');if(!layouts.includes(draft.layout))throw new Error('Выберите размер сетки');
-      const set={id:draft.id||'set-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7),name,cameraIds,layout:draft.layout};
+      if(!cameraIds.length)throw new Error('Выберите хотя бы одну камеру');
+      const set={id:draft.id||'set-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7),name,cameraIds,layout:WorkspaceStore.layoutForCount(cameraIds.length)};
       const index=view.sets.findIndex(item=>item.id===set.id);if(index<0)view.sets.push(set);else view.sets[index]=set;
       view.activeId=set.id;this.save();return set;
     }

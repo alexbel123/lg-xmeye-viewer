@@ -127,11 +127,16 @@
   }
   function openEditor(id,copy=false){
     if(!state.connection)return toast('Подключите регистратор');const source=id?view()?.sets.find(set=>set.id===id):null;
-    state.draft=source?{...source,id:copy?null:source.id,name:(copy?source.name+' — копия':source.name).slice(0,36),cameraIds:[...source.cameraIds]}:{id:null,name:'',cameraIds:[],layout:6};
+    state.draft=source?{id:copy?null:source.id,name:(copy?source.name+' — копия':source.name).slice(0,36),cameraIds:[...source.cameraIds]}:{id:null,name:'',cameraIds:[]};
     closeDrawer(false);$('editor-backdrop').hidden=false;$('editor-title').textContent=state.draft.id?'Редактировать набор':'Новый набор';$('set-name').value=state.draft.name;$('editor-error').textContent='';renderEditor();focusElement($('set-name'));
   }
   function renderEditor(){
-    segments($('editor-layout-options'),state.draft.layout,'draft-layout');$('selected-total').textContent=state.draft.cameraIds.length;$('editor-device-note').textContent=profile().title+' · '+state.cameras.length+' каналов';
+    const count=state.draft.cameraIds.length,layout=WorkspaceStore.layoutForCount(count),preview=$('editor-layout-preview');
+    preview.dataset.layout=count?String(layout):'';preview.querySelector('.auto-layout-icon').innerHTML=layoutIcon(layout);
+    $('editor-layout-value').textContent=count?layout+' '+(layout===1?'окно':layout===6?'окон':'окна'):'Выберите камеры';
+    $('editor-layout-note').textContent=count>6?'По 6 камер на странице · страниц: '+Math.ceil(count/6):'По числу выбранных камер';
+    document.querySelector('[data-action="save-set"]').disabled=count===0;
+    $('selected-total').textContent=count;$('editor-device-note').textContent=profile().title+' · '+state.cameras.length+' каналов';
     const picker=$('camera-picker');picker.replaceChildren();
     for(const item of state.cameras){const selected=state.draft.cameraIds.includes(item.id),pick=button('pick','','pick-camera'+(selected?' selected':''));pick.dataset.camera=item.id;pick.setAttribute('aria-pressed',String(selected));pick.setAttribute('aria-label',(selected?'Убрать':'Добавить')+' камеру '+item.id+': '+item.name);const image=text('div','pick-image','');image.innerHTML=icon('camera');image.append(text('span','picker-number',String(item.id).padStart(2,'0')));const check=text('span','pick-check','');check.innerHTML=icon('check');image.append(check);const label=text('span','pick-label','');label.append(text('span','',String(item.id).padStart(2,'0')),document.createTextNode(item.name));pick.append(image,label);picker.append(pick);}
     const selection=$('selected-cameras');selection.replaceChildren();
@@ -200,7 +205,6 @@
     'close-drawer':()=>closeDrawer(),'select-set':item=>selectSet(item.dataset.set),layout:item=>changeLayout(Number(item.dataset.count)),
     'edit-current':()=>openEditor(current()?.id),'edit-set':item=>openEditor(item.dataset.set),'new-set':()=>openEditor(null),'copy-current':()=>openEditor(current()?.id,true),'close-editor':closeEditor,'save-set':saveSet,
     'delete-set':()=>{try{store.remove(state.selected,state.draft.id);closeEditor();state.page=0;render();toast('Набор удалён');}catch(error){$('editor-error').textContent=error.message;}},
-    'draft-layout':item=>{state.draft.layout=Number(item.dataset.count);renderEditor();focusElement($('editor-layout-options').querySelector('[data-count="'+item.dataset.count+'"]'));},
     pick:item=>{const id=Number(item.dataset.camera),index=state.draft.cameraIds.indexOf(id);if(index<0)state.draft.cameraIds.push(id);else state.draft.cameraIds.splice(index,1);renderEditor();focusElement($('camera-picker').querySelector('[data-camera="'+id+'"]'));},
     'clear-selection':()=>{state.draft.cameraIds=[];renderEditor();},'move-up':item=>moveCamera(Number(item.dataset.camera),-1),'move-down':item=>moveCamera(Number(item.dataset.camera),1),
     clean:()=>{state.clean=!state.clean;closeDrawer(false);render(false);focusTile();wakeControls();},'open-camera':item=>openCamera(Number(item.dataset.camera)),'close-camera':closeCamera,

@@ -30,7 +30,7 @@ class ViewerManager {
       this.server.listen(0, '127.0.0.1', () => { this.port = this.server.address().port; resolve(); });
     });
     await this.opening;
-    return { version: '0.4.0', native: true, maxStreams: MAX_STREAMS, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list(), settings: await this.settings.get() };
+    return { version: '0.4.1', native: true, maxStreams: MAX_STREAMS, videoCodecs: ['H.264', 'H.265'], audio: false, credentials: await this.credentials.list(), settings: await this.settings.get() };
   }
 
   async saveSettings(parameters) { await this.settings.set(parameters); return { saved:true }; }

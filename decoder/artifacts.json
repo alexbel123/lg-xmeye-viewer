@@ -1,6 +1,6 @@
 {
-  "version": "0.4.0",
-  "url": "https://github.com/alexbel123/lg-xmeye-viewer/releases/download/v0.4.0/lg-xmeye-decoder-0.4.0.zip",
+  "version": "0.4.1",
+  "url": "https://github.com/alexbel123/lg-xmeye-viewer/releases/download/v0.4.1/lg-xmeye-decoder-0.4.1.zip",
   "sha256": "3bed26ce2a2882e99fc26e1dde323cdce9a326c9b7b158eb86e80e921cc63c81",
   "files": {
     "videodec.js": "ac229954b49d5e6ba2dd044e1a01a1ef67304b7e353d05e25073573e23fcb453",
